@@ -8,5 +8,10 @@ js:
 - 'src/*'
 
 php:
-- 'php'
+- 'php/*'
 
+css:
+- 'css/*'
+
+python:
+- 'python/*'
