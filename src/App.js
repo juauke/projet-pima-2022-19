@@ -5,9 +5,6 @@ import React from 'react';
 /* Function exported to render the page */
 
 function App() {
-  let influenceurs = [
-    'A','B','C','D','E','F','G','H','I'
-  ];
   
   return (
         <MainContainer/>
@@ -49,7 +46,7 @@ function CurrentPage(props) {
   let influenceurs = [
     'A','B','C','D','E','F','G','H','I'
   ];
-    if (props.Page == 'Acceuil')
+    if (props.Page == 'Accueil')
     {
       return(
         <>
@@ -138,7 +135,7 @@ class MainContainer extends React.Component {
    */
 constructor(props) {
   super(props);
-  this.state = { curPage : 'Acceuil'}
+  this.state = { curPage : 'Accueil'}
 }
 /**
  * 
