@@ -1,8 +1,8 @@
 repo:
-- any: ['*','!Dockerfile','!.dockerignore']
+- any: ['*']
 
 github:
-- '.github/*'
+- ['.github/*', '.gitignore']
 
 js:
 - 'src/*'
@@ -15,3 +15,6 @@ css:
 
 python:
 - 'python/*'
+
+package:
+- ['package.json', 'package-lock.json']
