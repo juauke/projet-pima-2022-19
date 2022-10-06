@@ -1,0 +1,91 @@
+
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: block;
+  left: 0px;
+  top: 0px;
+  position: absolute;
+}
+
+.NavBar {
+  height: 100%;
+  width: 15%;
+  display: block;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  overflow: hidden;
+  position: absolute;
+}
+
+.NavBarButton{
+  height: 25%;
+  width: 100%;
+  padding: 8px;
+  margin: 0;
+  background-color: violet;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  color: white;
+  position: relative;
+}
+
+.NavBarButton:hover {
+  background-color: white;
+  color: violet;
+  border: 2px solid violet;
+}
+
+
+.pageContainer {
+  position: absolute;
+  width: 85%;
+  right: 0px;
+  top: -3.5%;
+  bottom: 0px;
+  left: 15%;
+  background-color: white;
+  height: 100%;
+  color: black;
+  display: block;
+  padding: 0%;
+  overflow: hidden;
+
+
+}
+
+.title {
+  color: white;
+  text-align: center;
+  position: relative;
+  background-color: violet;
+  height: 7%;
+  width: 100%;
+  top: 0%;
+  font-family: 'DejaVU Sans Mono';
+  font-size: 37px;
+  font-weight: 200;
+  padding: 1%;
+  
+}
+
+.research {
+  position: relative;
+  width: 50%;
+  top: 10%;
+  left: 25%;
+  outline: none;
+  resize: none;
+  border-radius: 10px;
+}
+
+.socialNetworkButton {
+  width: 15%;
+}
