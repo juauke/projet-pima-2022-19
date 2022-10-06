@@ -1,0 +1,12 @@
+repo:
+- any: ['*','!Dockerfile','!.dockerignore']
+
+github:
+- '.github/*'
+
+js:
+- 'src/*'
+
+php:
+- 'php'
+
