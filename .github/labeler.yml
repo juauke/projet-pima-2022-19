@@ -8,13 +8,13 @@ js:
 - 'src/*'
 
 php:
-- 'php/*'
+- 'PHP/*'
 
 css:
-- 'css/*'
+- 'CSS/*'
 
 python:
-- 'python/*'
+- 'Python/*'
 
 package:
 - ['package.json', 'package-lock.json']
