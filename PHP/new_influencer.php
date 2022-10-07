@@ -10,8 +10,8 @@
         fclose($file);
 
         $data = json_decode($data, true);
-        $size = sizeof($data[1]);
-        $data[1][$size] = array("nom" => $lastname, "prenom" => $firstname, "genre" => $genre, "pseudo" => $pseudo, "id" => $size, "suivi_par" => array($id_user));
+        $size = sizeof($data[0]);
+        $data[0][$size] = array("nom" => $lastname, "prenom" => $firstname, "genre" => $genre, "pseudo" => $pseudo, "id" => $size, "suivi_par" => array($id_user));
 
         $file=fopen($data_location, "w");
         fwrite($file, json_encode($data));
