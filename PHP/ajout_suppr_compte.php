@@ -1,6 +1,6 @@
 <?php
 //Requires my previous file
-require __DIR__ . '/ajout_suppr_utilisateurs.php';
+require("ajout_suppr_utilisateurs.php");
 //Require function in_array, array_splice, file_get_contents, json_decode, file_put_contents
 
 //G6
