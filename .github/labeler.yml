@@ -1,0 +1,20 @@
+repo:
+- any: ['*']
+
+github:
+- ['.github/*', '.gitignore']
+
+js:
+- 'src/*'
+
+php:
+- 'PHP/*'
+
+css:
+- 'CSS/*'
+
+python:
+- 'Python/*'
+
+package:
+- ['package.json', 'package-lock.json']
