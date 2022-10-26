@@ -6,7 +6,8 @@ import React from 'react';
 
 function App() {
   let influenceurs = [
-    'A','B','C','D','E','F','G','H','I'
+    ['Hauchard', 'Iov', 'Odzierejko', 'Thavaud', 'Delapart'], 
+    ['SqueeZie', 'Cyprien', '"Natoo"', 'Norman', 'Tibo InShape']
   ];
   
   return (
@@ -47,7 +48,8 @@ class SocialNetworkButton extends React.Component {
  */
 function CurrentPage(props) {
   let influenceurs = [
-    'A','B','C','D','E','F','G','H','I'
+    ['Hauchard', 'Iov', 'Odzierejko', 'Thavaud', 'Delapart'], 
+    ['SqueeZie', 'Cyprien', 'Natoo', 'Norman', 'Tibo InShape']
   ];
     if (props.Page == 'Acceuil')
     {
@@ -55,7 +57,7 @@ function CurrentPage(props) {
         <>
         <h1 className='title'>{props.Page}</h1>
         <div>
-        <SearchBar products={influenceurs} />
+        <SearchBar products={influenceurs[1]} />
       </div>
         </>
         /* The text area stands for the research bar */
@@ -79,6 +81,26 @@ function CurrentPage(props) {
  * Create the SearchBar
  */
  function SearchBar(props) {
+
+  /*An additional function to work with the new format of influenceurs*/
+  function find_name(influenceur_pseudo){
+    let influenceurs = [
+      ['Hauchard', 'Iov', 'Odzierejko', 'Thavaud', 'Delapart'], 
+      ['SqueeZie', 'Cyprien', 'Natoo', 'Norman', 'Tibo InShape']
+    ];
+    let i = 0;
+    let name_found = 0;
+    while (name_found == 0){
+      if (influenceurs[1][i] == influenceur_pseudo){
+        name_found = 1;
+      }
+      else{
+        i = i + 1;
+      }
+    }
+    return influenceurs[0][i];
+  }
+
   const [searchVal, setSearchVal] = React.useState('');
   
   const handleInput = (e) => {
@@ -119,7 +141,7 @@ function CurrentPage(props) {
       <div className="results-wrap">
         <ul>
           {filteredProducts.map((product) => {
-            return <li key={product} className='list-item'><a href='#'>{product}</a></li>
+            return <li key={product} className='list-item'><a href='#'>{find_name(product) + " '" + product + "'"}</a></li>
           })}
         </ul>
       </div>
