@@ -224,7 +224,7 @@ function CurrentPage(props) {
     
     <MenuCross onClick={props.onClick}/>
      <h1 className='title'>{props.Page}</h1>
-     <h1 className='shrimmpTitle'><em> Shrimmp </em></h1>
+     <h1 className='shriimpTitle'><em> Shriimp </em></h1>
      </div>
      </>
   }
