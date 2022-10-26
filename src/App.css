@@ -114,6 +114,11 @@ transition-duration: 0.3s;
   
 }
 
+.shrimmpTitle{
+  color: var(--lightBlue);
+  margin-right: 5px;
+}
+
 .crossContainer {
   height: 10%;
   width: 20%;
