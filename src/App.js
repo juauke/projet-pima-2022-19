@@ -266,6 +266,26 @@ constructor(props) {
  * Create the SearchBar
  */
  function SearchBar(props) {
+
+  /*An additional function to work with the new format of influenceurs*/
+  function find_name(influenceur_pseudo){
+    let influenceurs = [
+      ['Hauchard', 'Iov', 'Odzierejko', 'Thavaud', 'Delapart'], 
+      ['SqueeZie', 'Cyprien', 'Natoo', 'Norman', 'Tibo InShape']
+    ];
+    let i = 0;
+    let name_found = 0;
+    while (name_found == 0){
+      if (influenceurs[1][i] == influenceur_pseudo){
+        name_found = 1;
+      }
+      else{
+        i = i + 1;
+      }
+    }
+    return influenceurs[0][i];
+  }
+
   const [searchVal, setSearchVal] = React.useState('');
   
   const handleInput = (e) => {
