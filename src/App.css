@@ -1,4 +1,12 @@
 
+:root {
+  --black: #0B0C10;
+  --darkGrey: #1F2833;
+  --lightGrey: #C5C6C7;
+  --lightBlue: #66FCF1;
+  --greyBlue: #45A29E;
+  
+}
 
 .container {
   height: 100%;
@@ -10,22 +18,43 @@
 }
 
 .NavBar {
+  top: 10%;
   height: 100%;
+  bottom: 0px;
   width: 15%;
   display: block;
   left: 0px;
-  top: 0px;
   bottom: 0px;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
+  transition-duration: 0.3s;
+  z-index: 100;
 }
 
-.NavBarButton{
+.navBarHidden {
+  transition-duration: 0.3s;
+  width: 0px;
+}
+
+.navBarHidden .NavBarButton {
+display: none;
+transition-duration: 0.3s;
+}
+
+.linksContainer {
+  height: 90%;
+  position: relative;
+}
+
+
+
+
+.NavBar .NavBarButton{
   height: 25%;
   width: 100%;
   padding: 8px;
   margin: 0;
-  background-color: violet;
+  background-color: var(--black);
   border: none;
   padding: 15px 32px;
   text-align: center;
@@ -33,59 +62,349 @@
   display: inline-block;
   font-size: 16px;
   transition-duration: 0.4s;
-  color: white;
+  color: var(--lightBlue);
   position: relative;
 }
 
 .NavBarButton:hover {
   background-color: white;
-  color: violet;
-  border: 2px solid violet;
+  color: var(--black);
+  border: 2px solid var(--black);
 }
 
 
 .pageContainer {
-  position: absolute;
-  width: 85%;
+  position: fixed;
+  width: 100%;
   right: 0px;
   top: -3.5%;
   bottom: 0px;
-  left: 15%;
+  left: 0%;
   background-color: white;
   height: 100%;
   color: black;
   display: block;
   padding: 0%;
-  overflow: hidden;
+  overflow: scroll;
+}
 
+.currentPage {
+  position: relative;
+  top: 13.5%;
+}
 
+.topBar {
+  display: flex;
+  position: fixed;
+  background-color: var(--black);
+  height: 10%;
+  width: 100%;
+  top: 0%;
+  left: 0%;
+  z-index: 150;
 }
 
 .title {
-  color: white;
-  text-align: center;
-  position: relative;
-  background-color: violet;
-  height: 7%;
-  width: 100%;
-  top: 0%;
+  color: var(--lightBlue);
+  text-align: justify;
   font-family: 'DejaVU Sans Mono';
   font-size: 37px;
   font-weight: 200;
-  padding: 1%;
+  padding: 0%;
+  width: 80%;
   
+}
+
+.shriimpeTitle{
+  color: var(--lightBlue);
+  margin-right: 20px;
+}
+
+.crossContainer {
+  height: 10%;
+  width: 20%;
+  padding: 8px;
+  margin: 0;
+  position: relative;
+}
+
+
+
+/* Bar de recherche */
+
+:recherche{
+  
+  --resultWidth : 50rem
 }
 
 .research {
   position: relative;
   width: 50%;
-  top: 10%;
+  top: 2rem;
   left: 25%;
   outline: none;
   resize: none;
-  border-radius: 10px;
 }
 
+#input-label {
+  display: none;
+}
+
+.input-wrap {
+  position: absolute;
+  width: 100%;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem 0 1rem;
+  margin: 5px;
+  border-radius: 0.9rem;
+  background: var(--lightGrey);
+  border: 1px solid var(--greyBlue);
+  box-sizing: border-box;
+  z-index: 200;
+}
+
+.input-wrap i {
+  font-size: 1.5rem;
+  color: white;
+}
+
+#product-search {
+  position: relative;
+  font-size: 1.4rem;
+  color: white;
+  width: 100%;
+  height: 100%;
+  padding: 0 0 0 1rem;
+  background: var(--lightGrey);
+  color: var(--greyBlue);
+  border: none;
+  outline: none;
+}
+
+#product-search::placeholder {
+  color: white;
+  opacity: 0.7;
+}
+
+.fa-times:hover {
+  cursor: pointer;
+}
+
+.results-wrap {
+  position: relative;
+  top: 3rem;
+  width: var(--resultWidth);
+  height: 100px;
+  margin-top: 0rem;
+  padding: 0rem;
+  box-sizing: border-box;
+  overflow: scroll;
+}
+
+.list-item {
+  top: 0rem;
+  height: 1.5rem;
+  width: var(--resultWidth);
+  position: relative;
+  display: flex;
+  word-wrap: initial;
+  list-style-type: none;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  text-transform: capitalize;
+  margin-right: 0.5rem;
+  overflow: hidden;
+}
+
+.list-item a {
+  text-decoration: none;
+  color: var(--greyBlue);
+  background-color: white;
+  border: 1px solid var(--darkGrey);
+  width: 50rem; 
+  height: 1.5rem;
+}
+
+.list-item a:hover {
+  color: var(--lightBlue);
+  background-color: var(--darkGrey);
+  transition: 200ms ease-in;
+}
+
+.resultSearch {
+  position: relative;
+  width: 60%;
+  left: 20%;
+  top: 100px;
+}
+
+.hide {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .input-wrap {
+    width: 96%;
+  }
+  
+  .results-wrap {
+    width: 96%;
+  }
+}
+
+
+/* Social Network Page */
+
+
+.socialNetworkMenu {
+  position: relative;
+  display: flex;
+  background-color: var(--darkGrey);
+  box-shadow: 0px 0px 8px 5px #888888;
+  top: 0%;
+}
+
+.networkTitle {
+  color: var(--lightBlue);
+  text-align: center;
+  font-size: 3rem;
+  background-color: var(--black);
+  width: 100%;
+}
+
+
+
+
 .socialNetworkButton {
-  width: 15%;
+  width: 5%;
+  cursor: pointer;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: 2px solid var(--darkGrey);
+  border-radius: 10px;
+  transition: 0.5s;
+  padding: 2px;
+}
+
+.socialNetworkButton:hover {
+  border: 2px solid var(--lightGrey);
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+.activeButton {
+  width: 5%;
+  cursor: pointer;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px; 
+  border: 2px solid var(--lightGrey);
+  border-radius: 10px;
+  padding: 2px;
+}
+
+
+/* Influenceur */
+
+.influenceurWrap {
+  position: relative;
+  color: var(--lightBlue);
+  background-color: var(--darkGrey);
+  width: 90%;
+  border: 2px solid var(--greyBlue);
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 3%;
+}
+
+.influenceurWrap > * {
+  padding: 4px;
+  
+}
+
+.influenceurName {
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row: 1;
+
+}
+
+.influenceurImage {
+  position: relative;
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row: 1;
+  width: 30%;
+  
+}
+
+.influenceurFollower {
+  position: relative;
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.influenceurVids {
+  position: relative;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.influenceurVues {
+  position: relative;
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.influenceurLink {
+  position: relative;
+  grid-column: 4;
+  grid-row: 2;
+  color: var(--greyBlue);
+}
+
+.influenceursDisplayer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Nav Icon */
+
+svg {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 1.5;
+cursor:pointer;
+}
+
+svg path {
+  fill: none;
+  stroke: var(--lightBlue);
+  stroke-width: 1px;
+}
+
+#top,
+#bottom {
+  stroke-dasharray: 30, 75.39;
+  transition: all 0.6s cubic-bezier(0.6, 0.33, 0.67, 1.29);
+}
+
+svg.active #top,
+svg.active #bottom {
+  stroke-dasharray: 75.39;
+  stroke-dashoffset: -60;
 }
