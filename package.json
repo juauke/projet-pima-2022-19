@@ -1,5 +1,6 @@
 {
   "name": "test-react",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,6 +10,7 @@
     "node": "^19.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-script": "^2.0.5",
     "react-scripts": "5.0.1",
     "web-vitals": "^3.0.4"
   },
