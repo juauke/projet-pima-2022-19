@@ -92,12 +92,6 @@ class SocialNetworkMenu extends React.Component {
         <SocialNetworkButton Image="Twitch_logo.png" onClick={() => {this.props.onClick2(); this.handleToggleButton('Twitch');}} Active={this.state.currNetwork == 'Twitch'}/>
         <SocialNetworkButton Image="Facebook_logo.png" onClick={() => {this.props.onClick3(); this.handleToggleButton('Facebook');}} Active={this.state.currNetwork == 'Facebook'}/>
         <SocialNetworkButton Image="Instagram_logo.png" onClick={() => {this.props.onClick4(); this.handleToggleButton('Instagram');}} Active={this.state.currNetwork == 'Instagram'}/>
-        <SocialNetworkButton Image="Youtube_logo.png"/>
-        <SocialNetworkButton Image="Youtube_logo.png"/>
-        <SocialNetworkButton Image="Youtube_logo.png"/>
-        <SocialNetworkButton Image="Youtube_logo.png"/>
-        <SocialNetworkButton Image="Youtube_logo.png"/>
-        <SocialNetworkButton Image="Youtube_logo.png"/>
       </div>
     </>
     );
@@ -146,6 +140,26 @@ class SocialNetworkContent extends React.Component {
 
 }
 
+class YoutuberInfo extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return(<>
+    <div className='influenceurWrap'>
+    <h3 className='influenceurName'>{this.props.Name}</h3>
+    <img src={this.props.Image} className="influenceurImage"></img>
+    <p className='influenceurFollower'>Nombre de followers : <br/>{this.props.Follower}</p>
+    <p className='influenceurVids'>Nombre de vidéos publiées : {this.props.NombreVideos}</p>
+    <p className='influenceurVues'>Nombre de vues : <br/>{this.props.NombreVues}</p>
+    <a className='influenceurLink' href={this.props.Link}>{this.props.Link}</a>
+    </div>
+    </>);
+  }
+}
+
+
 class YoutubeNetworkContent extends React.Component {
   constructor(props) {
     super(props);
@@ -154,7 +168,13 @@ class YoutubeNetworkContent extends React.Component {
   render() {
     return(
     <>
-      <h1 className='youtubeTitle'>Youtube</h1>
+      <h1 className='networkTitle'>Youtube</h1>
+      <div className='influenceursDisplayer'>
+      <YoutuberInfo Name="Joueur Du Grenier" Image="JDG_pic.jpg" Follower="3,72 M" NombreVideos="150" NombreVues="1 025 230 900 vues" Link="https://www.youtube.com/user/joueurdugrenier" />
+      <YoutuberInfo Name="MrBeast" Image="MrBeast_pic.jpg" Follower="107 M" NombreVideos="206" NombreVues="17 812 188 155 vues" Link="https://www.youtube.com/user/MrBeast6000" />
+      <YoutuberInfo Name="Nexus VI" Image="NexusVI_pic.jpg" Follower="242 k" NombreVideos="206" NombreVues="18 805 698 vues" Link="https://www.youtube.com/c/ChroniqueNEXUSVI" />
+      <YoutuberInfo Name="PewDiePie" Image="PewDiePie_pic.jpg" Follower="111 M" NombreVideos="4 512" NombreVues="28 564 319 008 vues" Link="https://www.youtube.com/user/PewDiePie" />
+      </div>
     </>);
   }
 
@@ -191,22 +211,33 @@ setNetwork(newNetwork)
  * @param {*} props (Page)
  * @returns The html code for the current page depending on props.Page
  */
-function CurrentPage(props) {
+
+class CurrentPage extends React.Component {
+
+constructor(props) {
+  super(props);
+  this.state = {jdg : false}
+}
+
+ render() {
   let influenceurs = [
-    "Hubert Bonnisseur de la Bath",'Noël Flantier','Lucien Bramard','Larmina','Jack','Dolorès Koulechov','Heinrich','Sliman','Armand'
+    "Hubert Bonnisseur de la Bath",'Noël Flantier','Lucien Bramard','Larmina','Jack','Dolorès Koulechov','Heinrich','Sliman','Armand',"Joueur Du Grenier"
   ];
-    if (props.Page == 'Accueil')
+    if (this.props.Page == 'Accueil')
     {
       return(
         <>
         <div>
-        <SearchBar products={influenceurs} />
+        <SearchBar products={influenceurs} onClick={() => {this.setState({jdg : true})}}/>
+        <div className={this.state.jdg ? 'resultSearch' : 'hide'}>
+        <YoutuberInfo Name="Joueur Du Grenier" Image="JDG_pic.jpg" Follower="3,72 M" NombreVideos="150" NombreVues="1 025 230 900 vues" Link="https://www.youtube.com/user/joueurdugrenier" />
+        </div>
       </div>
         </>
       );
     }
 
-    else if (props.Page == 'Réseaux') {
+    else if (this.props.Page == 'Réseaux') {
       return(
         <>
       <SocialNetworkPage/>
@@ -218,13 +249,15 @@ function CurrentPage(props) {
 
   };  
 
+}
+
   function TopBar(props) {
     return<>
     <div className='topBar'>
     
     <MenuCross onClick={props.onClick}/>
      <h1 className='title'>{props.Page}</h1>
-     <h1 className='shriimpTitle'><em> Shriimp </em></h1>
+     <h1 className='shriimpeTitle'><em> Shriimpe </em></h1>
      </div>
      </>
   }
@@ -273,7 +306,7 @@ function CurrentPage(props) {
       <div className="results-wrap">
         <ul>
           {filteredProducts.map((product) => {
-            return <li key={product} className='list-item'><a href='#'>{product}</a></li>
+            return <li key={product} className='list-item' onClick={  props.onClick}><a href='#'>{product}</a></li>
           })}
         </ul>
       </div>
