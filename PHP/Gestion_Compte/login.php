@@ -36,6 +36,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
             <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
             <span class="invalid-feedback"><?php echo $password_err; ?></span>
         </div>
+        <p><a href="reset-password.php" class="btn btn-warning">Mot de passe oublié ?</a></p>
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Se connecter">
         </div>
