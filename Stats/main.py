@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
 import mariadb as db
-
 import sys
 
 from datetime import date
+
+imagePath = "/nfs/Images"
 
 def queryPassword():
     f = open("/passwords/pw.ini", "r")
@@ -27,6 +27,7 @@ try:
     )
     print(f'Connected to database', file=logfile)
     cursor = conn.cursor()
+    print(f'Cursor created.Ready to query in database', file=logfile)
     
     cursor.close()
     conn.close()
@@ -36,5 +37,7 @@ except db.Error as e:
     logfile.close()
     sys.exit(1)
 
-else:
+except Exception as e:
+    print(f"Error: {e}", file=logfile)
     logfile.close()
+    sys.exit(1)
