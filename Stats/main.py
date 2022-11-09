@@ -26,9 +26,15 @@ try:
         database="influenceurs"
     )
     print(f'Connected to database', file=logfile)
+    cursor = conn.cursor()
+    
+    cursor.close()
     conn.close()
     print(f'Disconnected from database', file=logfile)
 except db.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}", file=logfile)
     logfile.close()
     sys.exit(1)
+
+else:
+    logfile.close()
