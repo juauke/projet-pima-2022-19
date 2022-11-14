@@ -1,0 +1,124 @@
+/* Social Network Page */
+
+
+.socialNetworkMenu {
+    position: relative;
+    display: flex;
+    background-color: var(--darkGrey);
+    box-shadow: 0px 0px 8px 5px #888888;
+    top: 0%;
+  }
+  
+  .networkTitle {
+    color: var(--lightBlue);
+    text-align: center;
+    font-size: 3rem;
+    background-color: var(--black);
+    width: 100%;
+  }
+  
+  
+  
+  
+  .socialNetworkButton {
+    width: 5%;
+    cursor: pointer;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 2px solid var(--darkGrey);
+    border-radius: 10px;
+    transition: 0.5s;
+    padding: 2px;
+  }
+  
+  .socialNetworkButton:hover {
+    border: 2px solid var(--lightGrey);
+      border-radius: 10px;
+      transition: 0.5s;
+  }
+  
+  .activeButton {
+    width: 5%;
+    cursor: pointer;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px; 
+    border: 2px solid var(--lightGrey);
+    border-radius: 10px;
+    padding: 2px;
+  }
+  
+  
+  /* Influenceur */
+  
+  .influenceurWrap {
+    position: relative;
+    color: var(--lightBlue);
+    background-color: var(--darkGrey);
+    width: 90%;
+    border: 2px solid var(--greyBlue);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 3%;
+  }
+  
+  .influenceurWrap > * {
+    padding: 4px;
+    
+  }
+  
+  .influenceurName {
+    position: relative;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row: 1;
+  
+  }
+  
+  .influenceurImage {
+    position: relative;
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row: 1;
+    width: 30%;
+    
+  }
+  
+  .influenceurFollower {
+    position: relative;
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  .influenceurVids {
+    position: relative;
+    grid-column: 2;
+    grid-row: 2;
+  }
+  
+  .influenceurVues {
+    position: relative;
+    grid-column: 3;
+    grid-row: 2;
+  }
+  
+  .influenceurLink {
+    position: relative;
+    grid-column: 4;
+    grid-row: 2;
+    color: var(--greyBlue);
+  }
+  
+  .influenceursDisplayer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
