@@ -8,5 +8,4 @@ git pull
 cp -r PHP ../shriimpe
 cp -r CSS ../shriimpe
 cp -r public ../shriimpe
-
-chgrp -R work ../shriimpe
+cp -r Stats/* /nfs/Python/
