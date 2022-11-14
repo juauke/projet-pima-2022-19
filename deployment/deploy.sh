@@ -6,6 +6,5 @@ cd ~/projet-pima-2022-19
 git pull
 
 cp -r PHP ../shriimpe
-cp -r CSS ../shriimpe
-cp -r public ../shriimpe
+cp -r build/* ../shriimpe
 cp -r Stats/* /nfs/Python/
