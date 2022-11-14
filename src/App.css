@@ -72,7 +72,26 @@
   position: relative;
 }
 
+.logButton {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 4%;
+  height: 50%;
+  position: relative;
+  margin-right: 1%;
+  background-color: var(--black);
+  color: var(--lightBlue);
+  font-size: 12px;
+  border: 2px solid var(--black);
+  transition-duration: 0.4s;
+}
 
+.logButton:hover {
+  background-color: white;
+  color: var(--black);
+  border: 2px solid var(--black);
+}
 
 
 

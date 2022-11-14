@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import {SocialNetworkPage, YoutuberInfo}  from "./SocialNetworkMenu.js";
 import {MenuCross, MenuLink} from "./SideMenu.js";  
 import SearchBar from "./SearchBar.js";  
+import LogButton from "./UserConnexion.js";
 
 /* Function exported to render the page */
 
@@ -63,12 +64,15 @@ constructor(props) {
 
 }
 
+
+
   function TopBar(props) {
     return<>
     <div className='topBar'>
     
     <MenuCross onClick={props.onClick}/>
      <h1 className='title'>{props.Page}</h1>
+    <LogButton Page="Log in" Link="./PHP/Gestion_Compte/login.php"/>
      <h1 className='shriimpeTitle'><em> Shriimpe </em></h1>
      </div>
      </>
