@@ -1,0 +1,57 @@
+
+.NavBar {
+    top: 10%;
+    height: 100%;
+    bottom: 0px;
+    width: 15%;
+    display: block;
+    left: 0px;
+    bottom: 0px;
+    overflow: hidden;
+    position: fixed;
+    transition-duration: 0.3s;
+    z-index: 100;
+  }
+  
+  .navBarHidden {
+    transition-duration: 0.3s;
+    width: 0px;
+  }
+  
+  .navBarHidden .NavBarButton {
+  display: none;
+  transition-duration: 0.3s;
+  }
+  
+  .linksContainer {
+    height: 90%;
+    position: relative;
+  }
+  
+  
+  
+  
+  .NavBar .NavBarButton{
+    height: 25%;
+    width: 100%;
+    padding: 8px;
+    margin: 0;
+    background-color: var(--black);
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    color: var(--lightBlue);
+    position: relative;
+  }
+  
+  .NavBarButton:hover {
+    background-color: white;
+    color: var(--black);
+    border: 2px solid var(--black);
+  }
+  
+  

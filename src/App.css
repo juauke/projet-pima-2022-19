@@ -1,4 +1,12 @@
 
+:root {
+  --black: #0B0C10;
+  --darkGrey: #1F2833;
+  --lightGrey: #C5C6C7;
+  --lightBlue: #66FCF1;
+  --greyBlue: #45A29E;
+  
+}
 
 .container {
   height: 100%;
@@ -9,83 +17,110 @@
   position: absolute;
 }
 
-.NavBar {
-  height: 100%;
-  width: 15%;
-  display: block;
-  left: 0px;
-  top: 0px;
-  bottom: 0px;
-  overflow: hidden;
-  position: absolute;
-}
-
-.NavBarButton{
-  height: 25%;
-  width: 100%;
-  padding: 8px;
-  margin: 0;
-  background-color: violet;
-  border: none;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-  color: white;
-  position: relative;
-}
-
-.NavBarButton:hover {
-  background-color: white;
-  color: violet;
-  border: 2px solid violet;
-}
-
-
 .pageContainer {
-  position: absolute;
-  width: 85%;
+  position: fixed;
+  width: 100%;
   right: 0px;
   top: -3.5%;
   bottom: 0px;
-  left: 15%;
+  left: 0%;
   background-color: white;
   height: 100%;
   color: black;
   display: block;
   padding: 0%;
-  overflow: hidden;
+  overflow: scroll;
+}
 
+.currentPage {
+  position: relative;
+  top: 13.5%;
+}
 
+.topBar {
+  display: flex;
+  position: fixed;
+  background-color: var(--black);
+  height: 10%;
+  width: 100%;
+  top: 0%;
+  left: 0%;
+  z-index: 150;
 }
 
 .title {
-  color: white;
-  text-align: center;
-  position: relative;
-  background-color: violet;
-  height: 7%;
-  width: 100%;
-  top: 0%;
+  color: var(--lightBlue);
+  text-align: justify;
   font-family: 'DejaVU Sans Mono';
   font-size: 37px;
   font-weight: 200;
-  padding: 1%;
+  padding: 0%;
+  width: 80%;
   
 }
 
-.research {
-  position: relative;
-  width: 50%;
-  top: 10%;
-  left: 25%;
-  outline: none;
-  resize: none;
-  border-radius: 10px;
+.shriimpeTitle{
+  color: var(--lightBlue);
+  margin-right: 20px;
 }
 
-.socialNetworkButton {
-  width: 15%;
+.crossContainer {
+  height: 10%;
+  width: 20%;
+  padding: 8px;
+  margin: 0;
+  position: relative;
+}
+
+.logButton {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 4%;
+  height: 50%;
+  position: relative;
+  margin-right: 1%;
+  background-color: var(--black);
+  color: var(--lightBlue);
+  font-size: 12px;
+  border: 2px solid var(--black);
+  transition-duration: 0.4s;
+}
+
+.logButton:hover {
+  background-color: white;
+  color: var(--black);
+  border: 2px solid var(--black);
+}
+
+
+
+
+/* Nav Icon */
+
+svg {
+  fill-rule: evenodd;
+  clip-rule: evenodd;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 1.5;
+cursor:pointer;
+}
+
+svg path {
+  fill: none;
+  stroke: var(--lightBlue);
+  stroke-width: 1px;
+}
+
+#top,
+#bottom {
+  stroke-dasharray: 30, 75.39;
+  transition: all 0.6s cubic-bezier(0.6, 0.33, 0.67, 1.29);
+}
+
+svg.active #top,
+svg.active #bottom {
+  stroke-dasharray: 75.39;
+  stroke-dashoffset: -60;
 }

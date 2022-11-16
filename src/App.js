@@ -1,153 +1,83 @@
 
 import './App.css';
-import React from 'react';
+import './SideBar.css';
+import './SearchBar.css';
+import './SocialNetwork.css';
+import React, { useState } from "react";
+import {SocialNetworkPage, YoutuberInfo}  from "./SocialNetworkMenu.js";
+import {MenuCross, MenuLink} from "./SideMenu.js";  
+import SearchBar from "./SearchBar.js";  
+import LogButton from "./UserConnexion.js";
 
 /* Function exported to render the page */
 
 function App() {
-  let influenceurs = [
-    ['Hauchard', 'Iov', 'Odzierejko', 'Thavaud', 'Delapart'], 
-    ['SqueeZie', 'Cyprien', '"Natoo"', 'Norman', 'Tibo InShape']
-  ];
   
   return (
         <MainContainer/>
   );
 }
 
-/**
- * 
- * @param {*} props (onClick, Page)
- * @returns A html button with the props.onClick onclick trigger and the props.Page text
- */
-
-function MenuLink(props)
-{
-  return <button className='NavBarButton' onClick={props.onClick}>{props.Page}</button>;
-}
-
-/**
- * 
- */
-class SocialNetworkButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <img src={this.props.Image} className="socialNetworkButton"></img>
-    );
-  }
-}
 
 /**
  * 
  * @param {*} props (Page)
  * @returns The html code for the current page depending on props.Page
  */
-function CurrentPage(props) {
+
+class CurrentPage extends React.Component {
+
+constructor(props) {
+  super(props);
+  this.state = {jdg : false}
+}
+
+ render() {
   let influenceurs = [
-    ['Hauchard', 'Iov', 'Odzierejko', 'Thavaud', 'Delapart'], 
-    ['SqueeZie', 'Cyprien', 'Natoo', 'Norman', 'Tibo InShape']
+    "Hubert Bonnisseur de la Bath",'Noël Flantier','Lucien Bramard','Larmina','Jack','Dolorès Koulechov','Heinrich','Sliman','Armand',"Joueur Du Grenier"
   ];
-    if (props.Page == 'Acceuil')
+    if (this.props.Page == 'Accueil')
     {
       return(
         <>
-        <h1 className='title'>{props.Page}</h1>
         <div>
-        <SearchBar products={influenceurs[1]} />
+        <SearchBar products={influenceurs} onClick={() => {this.setState({jdg : true})}}/>
+        <div className={this.state.jdg ? 'resultSearch' : 'hide'}>
+        <YoutuberInfo Name="Joueur Du Grenier" Image="JDG_pic.jpg" Follower="3,72 M" NombreVideos="150" NombreVues="1 025 230 900 vues" Link="https://www.youtube.com/user/joueurdugrenier" />
+        </div>
       </div>
         </>
-        /* The text area stands for the research bar */
       );
     }
 
-    else if (props.Page == 'Réseaux') {
+    else if (this.props.Page == 'Réseaux') {
       return(
         <>
-      <h1 className='title'>{props.Page}</h1>
-      <SocialNetworkButton Image="Youtube_logo.png"/>
+      <SocialNetworkPage/>
       </>
       );
     }
 
-    else return(<h1 className='title'>{props.Page}</h1>);
+    else return(<></>);
 
   };  
-  
-/**
- * Create the SearchBar
- */
- function SearchBar(props) {
 
-  /*An additional function to work with the new format of influenceurs*/
-  function find_name(influenceur_pseudo){
-    let influenceurs = [
-      ['Hauchard', 'Iov', 'Odzierejko', 'Thavaud', 'Delapart'], 
-      ['SqueeZie', 'Cyprien', 'Natoo', 'Norman', 'Tibo InShape']
-    ];
-    let i = 0;
-    let name_found = 0;
-    while (name_found == 0){
-      if (influenceurs[1][i] == influenceur_pseudo){
-        name_found = 1;
-      }
-      else{
-        i = i + 1;
-      }
-    }
-    return influenceurs[0][i];
-  }
-
-  const [searchVal, setSearchVal] = React.useState('');
-  
-  const handleInput = (e) => {
-    setSearchVal(e.target.value);
-  }
-  
-  const handleClearBtn = () => {
-    setSearchVal('');
-  }
-  
-  const filteredProducts = props.products.filter((product) => {
-    return product.includes(searchVal);
-  });
-  
-  return (
-    <div className='research'>
-      <div className='input-wrap'>
-        <i className="fas fa-search"></i>
-        <label 
-          for="product-search" 
-          id="input-label"
-        >
-          Product Search
-        </label>
-        <input 
-          onChange={handleInput}
-          value={searchVal}
-          type="text" 
-          name="product-search" 
-          id="product-search" 
-          placeholder="Search Influenceurs"
-        />
-        <i 
-          onClick={handleClearBtn}
-          className="fas fa-times"
-        ></i>
-      </div>
-      <div className="results-wrap">
-        <ul>
-          {filteredProducts.map((product) => {
-            return <li key={product} className='list-item'><a href='#'>{find_name(product) + " '" + product + "'"}</a></li>
-          })}
-        </ul>
-      </div>
-    </div>
-  );
 }
+
+
+
+  function TopBar(props) {
+    return<>
+    <div className='topBar'>
+    
+    <MenuCross onClick={props.onClick}/>
+     <h1 className='title'>{props.Page}</h1>
+    <LogButton Page="Log in" Link="../PHP/Gestion_Compte/login.php"/>
+     <h1 className='shriimpeTitle'><em> Shriimpe </em></h1>
+     </div>
+     </>
+  }
+
 /**
  * Describe the state of the page and places all the needed beacons
  */
@@ -160,24 +90,33 @@ class MainContainer extends React.Component {
    */
 constructor(props) {
   super(props);
-  this.state = { curPage : 'Acceuil'}
+  this.state = { curPage : 'Accueil' ,navBar : true}
 }
+
+handleToggleNav = () => {
+  this.setState({ navBar: !this.state.navBar });};
 /**
  * 
  * @returns The html code for the whole page
  */
-  render() {
+  render() {  
+    const navBar = this.state.navBar;
     return (
       <div className='container' id='cont'>
-        <aside className='NavBar'>
+        <aside className={navBar ? 'NavBar ' : "navBarHidden"} id='NavBar'>
+          <div className='linksContainer'>
           <MenuLink Page="Accueil" onClick={() => this.setState({curPage :'Accueil'})}/>
           <MenuLink Page="Statistiques" onClick={() => this.setState({curPage :'Statistiques'})}/>
           <MenuLink Page="Réseaux" onClick={() => this.setState({curPage :'Réseaux'})}/>
           <MenuLink Page="A propos" onClick={() => this.setState({curPage :'A propos'})}/>
+          </div>
         </aside>
   
         <div className='pageContainer'>
+          <TopBar Page={this.state.curPage} onClick={this.handleToggleNav} />
+          <div className='currentPage'>
           <CurrentPage Page={this.state.curPage} />
+          </div>
         </div>
       </div>
   
