@@ -124,3 +124,10 @@ svg.active #bottom {
   stroke-dasharray: 75.39;
   stroke-dashoffset: -60;
 }
+
+.statImg {
+  width: 25%;
+  left: 200px;
+  margin-left: 20%;
+  margin-top: 10%;
+}

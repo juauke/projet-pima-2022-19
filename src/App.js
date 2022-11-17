@@ -18,6 +18,9 @@ function App() {
   );
 }
 
+function StatImg(props){
+  return <img src={props.Image} class="statImg"></img>;
+}
 
 /**
  * 
@@ -57,6 +60,14 @@ constructor(props) {
       </>
       );
     }
+
+    else if (this.props.Page == 'Statistiques') {
+      return(<>
+      <StatImg Image="./abos_jdg.png"/>
+      <StatImg Image="./data/hist.png"/>
+      </>);
+    }
+
 
     else return(<></>);
 
