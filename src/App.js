@@ -63,7 +63,7 @@ constructor(props) {
 
     else if (this.props.Page == 'Statistiques') {
       return(<>
-      <StatImg Image="./abos_jdg.png"/>
+      <StatImg Image="./data/abos_jdg.png"/>
       <StatImg Image="./data/hist.png"/>
       </>);
     }
