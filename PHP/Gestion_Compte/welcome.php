@@ -2,7 +2,7 @@
 // Initialize the session
 session_start();
 
-header("location: ../index.html");
+header("location: ../../index.html");
 exit;
 
 ?>
