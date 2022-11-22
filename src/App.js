@@ -8,6 +8,7 @@ import {SocialNetworkPage, YoutuberInfo}  from "./SocialNetworkMenu.js";
 import {MenuCross, MenuLink} from "./SideMenu.js";  
 import SearchBar from "./SearchBar.js";  
 import LogButton from "./UserConnexion.js";
+import {influenceurs} from "./SearchBar.js";
 
 /* Function exported to render the page */
 
@@ -33,17 +34,20 @@ constructor(props) {
 }
 
  render() {
-  let influenceurs = [
-    "Hubert Bonnisseur de la Bath",'Noël Flantier','Lucien Bramard','Larmina','Jack','Dolorès Koulechov','Heinrich','Sliman','Armand',"Joueur Du Grenier"
-  ];
+  //let influenceurs = [
+  //  "Hubert Bonnisseur de la Bath",'Noël Flantier','Lucien Bramard','Larmina','Jack','Dolorès Koulechov','Heinrich','Sliman','Armand',"Joueur Du Grenier"
+  //];
+    let influenceurs=[["Test","Test","Test","Test","Test","Test"],["Test2","Test2","Test2","Test2","Test2","Test2"]]
     if (this.props.Page == 'Accueil')
     {
       return(
         <>
         <div>
+        {console.log(influenceurs)};
         <SearchBar products={influenceurs} onClick={() => {this.setState({jdg : true})}}/>
-        <div className={this.state.jdg ? 'resultSearch' : 'hide'}>
-        <YoutuberInfo Name="Joueur Du Grenier" Image="JDG_pic.jpg" Follower="3,72 M" NombreVideos="150" NombreVues="1 025 230 900 vues" Link="https://www.youtube.com/user/joueurdugrenier" />
+        <div>
+        {influenceurs.map(i=>
+          <YoutuberInfo Name={i[0]} Image={i[4]}  Follower={i[2]}  NombreVideos={i[3]}  NombreVues={i[1]} Link="https://www.youtube.com/user/joueurdugrenier" />)}
         </div>
       </div>
         </>

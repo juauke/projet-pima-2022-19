@@ -1,9 +1,5 @@
 <?php
-
-$twitch_client_id = 'uf1lmydha6dvfp8hejvov3ccnxnt9m';
-$twitch_client_secret = '39two7kdl1fdvfpfo8un2ic5qg5cyk';
-$twitch_scopes = '';
-
+function getStreamer($username){
 $client_id = "uf1lmydha6dvfp8hejvov3ccnxnt9m";
 $secret_id = 'ekqluu4u101wjqsp98wtkht1wp64bn';
 $keys = false;
@@ -22,6 +18,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $r = curl_exec($ch);
+//echo $r;
 $i = curl_getinfo($ch);
 curl_close($ch);
 
@@ -55,7 +52,6 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, array(
 'client_secret' => $secret_id,
 'grant_type' => "client_credentials"
 ));
-
 $r = curl_exec($ch);
 $i = curl_getinfo($ch);
 curl_close($ch);
@@ -63,8 +59,8 @@ curl_close($ch);
 if ($i['http_code'] == 200) {
     $data = json_decode($r);
     if (json_last_error() == JSON_ERROR_NONE) {
-        echo 'Got token';
-        print_r($data);
+        //echo 'Got token';
+        //print_r($data);
 
         // store the token for next run
         file_put_contents(__DIR__ . '/auth.json', $r, JSON_PRETTY_PRINT);
@@ -77,40 +73,67 @@ if ($i['http_code'] == 200) {
 } else {
 echo 'Token OK';
 print_r($keys);
-}
-
-$user = 'raythgaming';//Streamers username
+}//Streamers username
 $ch = curl_init();
+//echo $keys->access_token;
 
-curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/streams?user_login=$user 2");//Endpoint
+curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/users?login=$username");//Endpoint
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-"Client-ID: $client_id",
-"Authorization: Bearer " . $keys->access_token
+    'Content-type: application/json',
+    "Authorization: Bearer $keys->access_token",
+    "Client-ID: $client_id"
 ));
 $profile_data = json_decode(curl_exec($ch), true);
+
+$i=curl_getinfo($ch);
 curl_close($ch);
-print_r($profile_data);
-
-if (!isset($profile_data['data'][0])) {
-$live = 0;//Not live
-} else {
-$live = 1;//Is live
+//echo json_encode($profile_data);
+$id=$profile_data["data"][0]["id"];
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/users/follows?to_id=$id");//Endpoint
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-type: application/json',
+    "Authorization: Bearer $keys->access_token",
+    "Client-ID: $client_id"
+));
+$data2=json_decode(curl_exec($ch), true);
+$nb_videos=0;
+$page_left=true;
+//echo json_encode($data2["total"]);
+$lien_vers_autre_page='null';
+while($page_left==true){
+$ch = curl_init();
+if($lien_vers_autre_page=='null'){
+curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/videos/?user_id=$id&first=100");}//Endpoint
+else
+{
+    curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/videos/?user_id=$id&first=100&after=$lien_vers_autre_page");
 }
-
-if ($live == 1) {
-$title = $profile_data['data'][0]['title'];
-$viewer_count = $profile_data['data'][0]['viewer_count'];
-$game_id = $profile_data['data'][0]['game_id'];
-$went_live_at = DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($profile_data['data'][0]['started_at'])))->format('Y-m-d H:i:s');
-$started = date_create($went_live_at);
-$now = date_create(date('Y-m-d H:i:s'));
-$diff = date_diff($started, $now);
-$hours = $diff->h;
-$minutes = $diff->i;
-echo "$user is playing $game_name, started streaming $hours hours $minutes minutes ago and has $viewer_count viewers TITLE: $title";
-} else {
-echo "
-$user is not live";
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-type: application/json',
+    "Authorization: Bearer $keys->access_token",
+    "Client-ID: $client_id"
+));
+$data3=json_decode(curl_exec($ch), true);
+$nb_videos+=(int) count($data3["data"]);
+//echo $nb_videos;
+//echo json_encode($data3["pagination"]);
+if(json_encode($data3["pagination"])=='[]'){
+    $page_left=false;
 }
+else{
+    $lien_vers_autre_page=$data3["pagination"]["cursor"];
+    //echo json_encode($lien_vers_autre_page);
+}
+}
+return [$username,(int)json_encode($data2["total"]),$profile_data["data"][0]["view_count"],$nb_videos,$profile_data["data"][0]["profile_image_url"]];}
+
+$l=getStreamer("Etoiles");
+echo json_encode($l);
 ?>

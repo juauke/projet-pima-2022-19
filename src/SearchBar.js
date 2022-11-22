@@ -1,5 +1,5 @@
 import React from "react";
-
+import Jquery from "jquery";
 
   
 /**
@@ -29,7 +29,45 @@ import React from "react";
     const [searchVal, setSearchVal] = React.useState('');
     
     const handleInput = (e) => {
+      let influenceurs=[];
       setSearchVal(e.target.value);
+      Jquery.ajax({
+         type: 'POST',
+         url:'../PHP/barre_recherche.php',
+          data : {"name":e.target.value}
+      }).done(function (data) {
+        console.log(data);
+          if (data=='1'){
+            Jquery.ajax({
+              type: 'POST',
+              url:'../PHP/Connexion_API/Connect_api_youtube.php',
+               data : {"name":e.target.value}
+           }).done(function (data) {
+            influenceurs.push(data);
+
+
+           })
+           Jquery.ajax({
+            type: 'POST',
+            url:'../PHP/Connexion_API/Connect_api_Spotify.php',
+             data : {"name":e.target.value}
+         }).done(function (data) {
+          influenceurs.push(data);
+
+         })
+         Jquery.ajax({
+          type: 'POST',
+          url:'../PHP/Connexion_API//Connect_api_twitch.php',
+           data : {"name":e.target.value}
+       }).done(function (data) {
+        influenceurs.push(data);
+       })
+          }
+        else{
+          
+        }
+      })
+
     }
     
     const handleClearBtn = () => {
@@ -75,3 +113,4 @@ import React from "react";
   }
 
   export default SearchBar;
+  export let influenceurs;
