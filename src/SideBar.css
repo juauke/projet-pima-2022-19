@@ -1,4 +1,4 @@
-.navBarHidden {
+    .navBarHidden {
     transition-duration: 0.3s;
     width: 0px;
 }
