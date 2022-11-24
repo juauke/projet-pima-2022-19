@@ -1,6 +1,7 @@
 <?php
 // Include config file
-require_once "config.php";
+require_once "db.php";
+$pdo = connectToDatabase('utilisateurs');
 
 // Define variables and initialize with empty values
 $email = $username = $password = $confirm_password = "";
@@ -11,27 +12,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate email
     if (empty(trim($_POST["email"]))) {
-        $email_err = "Merci de rentrer un nom d'utilisateur.";
+        $email_err = "Merci de rentrer une adresse mail.";
     } elseif (!filter_var(trim($_POST["email"], FILTER_VALIDATE_EMAIL))) {
         $email_err = "Une adresse mail de la forme \"utilisateur@domaine.suffixe\" est attendue.";
     } else {
         // Prepare a select statement
-        $sql = "SELECT id FROM `primary_data` WHERE email = ?";
+        $sql = "SELECT id FROM `primary_data` WHERE email = :email";
 
-        if ($stmt = mysqli_prepare($link, $sql)) {
+        if ($stmt = $pdo->prepare($sql)) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
 
             // Set parameters
-            $param_email = trim($_POST["email"]);
+            $param_email = htmlentities(trim($_POST["email"]));
 
             // Attempt to execute the prepared statement
-            if (mysqli_stmt_execute($stmt)) {
-                /* store result */
-                mysqli_stmt_store_result($stmt);
-
-                if (mysqli_stmt_num_rows($stmt) == 1) {
-                    $email_err = "Cette adresse mail est déjà utilisé.";
+            if ($stmt->execute()) {
+                if ($stmt->rowCount() == 1) {
+                    $email_err = "Cette adresse mail est déjà utilisée.";
                 } else {
                     $email = trim($_POST["email"]);
                 }
@@ -40,9 +38,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             // Close statement
-            mysqli_stmt_close($stmt);
+            unset($stmt);
         }
-    }    
+    }  
+
 
     // Validate username
     if (empty(trim($_POST["username"]))) {
@@ -51,21 +50,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username_err = "Un nom d'utilisateur ne peut contenir que des caractères alphanumériques et des underscores.";
     } else {
         // Prepare a select statement
-        $sql = "SELECT id FROM `primary_data` WHERE username = ?";
+        $sql = "SELECT id FROM `primary_data` WHERE username = :username";
 
-        if ($stmt = mysqli_prepare($link, $sql)) {
+        if ($stmt = $pdo->prepare($sql)) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
 
             // Set parameters
-            $param_username = trim($_POST["username"]);
+            $param_username = htmlentities(trim($_POST["username"]));
 
             // Attempt to execute the prepared statement
-            if (mysqli_stmt_execute($stmt)) {
-                /* store result */
-                mysqli_stmt_store_result($stmt);
-
-                if (mysqli_stmt_num_rows($stmt) == 1) {
+            if ($stmt->execute()) {
+                if ($stmt->rowCount() == 1) {
                     $username_err = "Ce nom d'utilisateur est déjà utilisé.";
                 } else {
                     $username = trim($_POST["username"]);
@@ -75,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             // Close statement
-            mysqli_stmt_close($stmt);
+            unset($stmt);
         }
     }
 
@@ -101,20 +97,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check input errors before inserting in database
     if (empty($username_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)) {
 
-        // Prepare an insert statement
-        $sql = "INSERT INTO `primary_data` (username, email, passwd) VALUES (?, ?, ?)";
-
-        if ($stmt = mysqli_prepare($link, $sql)) {
+        // Prepare the call of the add user routine
+        $sql = "INSERT INTO `primary_data` (username, email, passwd) VALUES (:username, :email, :password)"; // "CALL ADD_USER (:username, :email, :password)";
+        
+        if ($stmt = $pdo->prepare($sql)) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "sss", $param_username, $param_email, $param_password);
+            $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
+            $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
+            $stmt->bindParam(":password", $param_password, PDO::PARAM_STR);
 
             // Set parameters
-            $param_username = $username;
-            $param_email = $email;
+            $param_username = htmlentities($username);
+            $param_email = htmlentities($email);
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
 
             // Attempt to execute the prepared statement
-            if (mysqli_stmt_execute($stmt)) {
+            if ($stmt->execute()) {
                 // Redirect to login page
                 header("location: login.php");
             } else {
@@ -122,13 +120,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             // Close statement
-            mysqli_stmt_close($stmt);
+            unset($stmt);
         }
     }
 
     // Close connection
-    mysqli_close($link);
+    unset($pdo);
+
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>S'inscrire</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
     <style>
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
