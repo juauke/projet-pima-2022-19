@@ -111,7 +111,7 @@ constructor(props) {
     <LogButton Page="Log in" Link="../PHP/Gestion_Compte/login.php"/>
     <LogButton Page="Sign in" Link="../PHP/Gestion_Compte/register.php"/>
      <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
-     </div>
+     </div> 
      </>
     }
 }
