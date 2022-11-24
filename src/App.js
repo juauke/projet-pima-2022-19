@@ -18,6 +18,9 @@ function App() {
   );
 }
 
+function StatImg(props){
+  return <img src={props.Image} class="statImg"></img>;
+}
 
 /**
  * 
@@ -58,6 +61,14 @@ constructor(props) {
       );
     }
 
+    else if (this.props.Page == 'Statistiques') {
+      return(<>
+      <StatImg Image="./data/abos_jdg.png"/>
+      <StatImg Image="./data/hist.png"/>
+      </>);
+    }
+
+
     else return(<></>);
 
   };  
@@ -67,16 +78,27 @@ constructor(props) {
 
 
   function TopBar(props) {
+    
+    if(sessionStorage.getItem("loggedin"))
+    {
+    <>
+    <h4 id="username"> Username </h4>
+    <LogButton Page="Log out" Link="../PHP/Gestion_Compte/logout.php"/>
+    </>
+    }
+    else{
     return<>
     <div className='topBar'>
     
     <MenuCross onClick={props.onClick}/>
      <h1 className='title'>{props.Page}</h1>
     <LogButton Page="Log in" Link="../PHP/Gestion_Compte/login.php"/>
-     <h1 className='shriimpeTitle'><em> Shriimpe </em></h1>
+    <LogButton Page="Sign in" Link="../PHP/Gestion_Compte/register.php"/>
+     <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
      </div>
      </>
-  }
+    }
+}
 
 /**
  * Describe the state of the page and places all the needed beacons

@@ -14,7 +14,7 @@ def queryPassword():
     return passwd.split(':')
 
 logfile = open("/var/log/stats/Stats.log", "a")
-print(f"{date.today()}\n", file=logfile)
+print(f"{date.today()}", file=logfile)
 
 try:
     print(f'Connecting to database...', file=logfile)
@@ -27,17 +27,17 @@ try:
     )
     print(f'Connected to database', file=logfile)
     cursor = conn.cursor()
-    print(f'Cursor created.Ready to query in database', file=logfile)
+    print(f'Cursor created. Ready to query in database', file=logfile)
     
     cursor.close()
     conn.close()
     print(f'Disconnected from database', file=logfile)
 except db.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}", file=logfile)
-    logfile.close()
-    sys.exit(1)
 
 except Exception as e:
     print(f"Error: {e}", file=logfile)
+
+finally:
     logfile.close()
-    sys.exit(1)
+    sys.exit(0)

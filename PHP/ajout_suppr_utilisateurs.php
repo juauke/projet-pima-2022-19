@@ -1,143 +1,242 @@
 <?php
-//Definition of functions for tasks A1, A2 and A3
-//All these functions modify JSON files
 
-//Function A1 : I don't know what to code
+require("db.php");
+//@requires : Name of the database the id of an user, id an influencer, name of social network ("instagram", "spotify", "twitch" or "youtube")
+//@assigns : Assigns the database 
+//add the influencer to the list of favorites of the user
+//if the influencer is present on other SN, the associated ids are also added (automatic following everywhere)
+//if the id user is not found, a new line with the provided id user is created
+//@returns : nothing
+function add_favorite(string $database_name, int $id_user, int $id_influencer, string $SN){
+    //Connecting to the database
+    $conn = connectToDatabase($database_name);
 
-//Function A2
-//@requires : A JSON file with the influencers, a JSON file with the users, the id of an influencer and the id of an user
-//@assigns : Assigns the JSON file of the influencers. 
-//The function add the user of the given id to the array of followers of the influencer 
-//@returns : 1 if the file of the influencers was modified and 0 otherwise
-//Throw an exception if the provided id do not exist
-function add_follower(string $jsonfile_influencers, string $jsonfile_users, int $id_influencer, int $id_user){
-    //We decode the files
-    $jsonString_influencers = file_get_contents($jsonfile_influencers);
-    $data_influencers = json_decode($jsonString_influencers, true);
-    $jsonString_users = file_get_contents($jsonfile_users);
-    $data_users = json_decode($jsonString_users, true);
-
-    //We check if the both id exist in the files
-    $test1 = -1;
-    $test2 = 0;
-
-    foreach ($data_influencers as $a1) {
-        foreach($a1 as $a){
-            $test1++;
-        if ($a["id"] == $id_influencer) {
-            break;
-        }
-        
-    }
-    break;
-}
-    if ($test1 == -1){
-        throw new Exception("Influencer id not found");
-    }
-    foreach ($data_users as $a1) {
-        foreach($a1 as $a){
-        if ($a["id"] == $id_user) {
-            $test2=1;
-        }
-    }}
-    if ($test2 == 0){
-        throw new Exception("User id not found");
-    }
+    //Checking if the id of the user is already in following_data
+    $sql1 = "SELECT id FROM following_data WHERE id = $id_user";
+    $res1 = $conn->query($sql1);
+    $res1 = $res1->fetchAll();
     
-    //Now we modify the files 
-    //First we check if the influencer is not already followed by the user
-    //number of persons following the influencer
-    $nb_followers = count($data_influencers["influenceurs_suivis"][$test1]["suivis_par"]);
-    //test
-    for($i = 0; $i < $nb_followers; $i++){
-        //We compare
-        if ($id_user == $data_influencers["influenceurs_suivis"][$test1]["suivis_par"][$i]){
-            //the influencer is already followed by the user
-            //We just re-encode the JSON file of the influencer 
-            $newJsonString = json_encode($data_influencers);
-            file_put_contents($jsonfile_influencers, $newJsonString);
-            return 0;
-        }
+    //If the id does not exist, we insert the line 
+    if ($res1 == NULL){
+        $sql2 = "INSERT INTO following_data (id, instagram, spotify, twitch, youtube) VALUES ($id_user, NULL, NULL, NULL, NULL)";
+        $conn->query($sql2);
     }
 
-    //Finally we modify the file 
-    array_push($data_influencers["influenceurs_suivis"][$test1]["suivis_par"], $id_user);
-    $newJsonString = json_encode($data_influencers);
-    file_put_contents($jsonfile_influencers, $newJsonString);
-    $test1=-1;
-    return 1;
+    $sql3 = "SELECT instagram, spotify, twitch, youtube FROM following_data WHERE id = $id_user";
+    $res2 = $conn->query($sql3);
+    $res2->execute(); 
+    $id_existing = $res2->fetchAll();
+
+    if ($SN == "instagram"){
+        $sql4 = "SELECT id_twitch, id_spotify, id_youtube FROM instagram WHERE id = $id_influencer";
+        $res4 = $conn->query($sql4);
+        $res4->execute();
+        $id_to_add = $res4->fetchAll();
+
+        $new_ids_insta = array_filter(explode(",", $id_existing[0]['instagram']));
+        array_push($new_ids_insta, $id_influencer);
+        $new_ids_insta = array_filter($new_ids_insta);
+
+        $new_ids_twitch = array_filter(explode(",", $id_existing[0]['twitch']));
+        array_push($new_ids_twitch, $id_to_add[0]['id_twitch']);
+        $new_ids_twitch = array_filter($new_ids_twitch);
+
+        $new_ids_spotify = array_filter(explode(",", $id_existing[0]['spotify']));
+        array_push($new_ids_spotify, $id_to_add[0]['id_spotify']);
+        $new_ids_spotify = array_filter($new_ids_spotify);
+
+        $new_ids_youtube = array_filter(explode(",", $id_existing[0]['youtube']));
+        array_push($new_ids_youtube, $id_to_add[0]['id_youtube']);
+        $new_ids_youtube = array_filter($new_ids_youtube);
+    }
+
+    if ($SN == "spotify"){
+        $sql4 = "SELECT id_insta, id_twitch, id_youtube FROM spotify WHERE id = $id_influencer";
+        $res4 = $conn->query($sql4);
+        $res4->execute();
+        $id_to_add = $res4->fetchAll();
+
+        $new_ids_insta = array_filter(explode(",", $id_existing[0]['instagram']));
+        array_push($new_ids_insta, $id_to_add[0]['id_insta']);
+        $new_ids_insta = array_filter($new_ids_insta);
+
+        $new_ids_spotify = array_filter(explode(",", $id_existing[0]['spotify']));
+        array_push($new_ids_spotify, $id_influencer);
+        $new_ids_spotify = array_filter($new_ids_spotify);
+
+        $new_ids_twitch = array_filter(explode(",", $id_existing[0]['twitch']));
+        array_push($new_ids_twitch, $id_to_add[0]['id_twitch']);
+        $new_ids_twitch = array_filter($new_ids_twitch);
+
+        $new_ids_youtube = array_filter(explode(",", $id_existing[0]['youtube']));
+        array_push($new_ids_youtube, $id_to_add[0]['id_youtube']);
+        $new_ids_youtube = array_filter($new_ids_youtube);
+    }
+
+    if ($SN == "twitch"){
+        $sql4 = "SELECT id_insta, id_spotify, id_youtube FROM twitch WHERE id = $id_influencer";
+        $res4 = $conn->query($sql4);
+        $res4->execute();
+        $id_to_add = $res4->fetchAll();
+
+        $new_ids_youtube = array_filter(explode(",", $id_existing[0]['youtube']));
+        array_push($new_ids_youtube, $id_to_add[0]['id_youtube']);
+        $new_ids_youtube = array_filter($new_ids_youtube);
+
+        $new_ids_insta = array_filter(explode(",", $id_existing[0]['instagram']));
+        array_push($new_ids_insta, $id_to_add[0]['id_insta']);
+        $new_ids_insta = array_filter($new_ids_insta);
+
+        $new_ids_spotify = array_filter(explode(",", $id_existing[0]['spotify']));
+        array_push($new_ids_spotify, $id_to_add[0]['id_spotify']);
+        $new_ids_spotify = array_filter($new_ids_spotify);
+
+        $new_ids_twitch = array_filter(explode(",", $id_existing[0]['twitch']));
+        array_push($new_ids_twitch, $id_influencer);
+        $new_ids_twitch = array_filter($new_ids_twitch);
+    }
+
+    if ($SN == "youtube"){
+        $sql4 = "SELECT id_insta, id_spotify, id_twitch FROM youtube WHERE id = $id_influencer";
+        $res4 = $conn->query($sql4);
+        $res4->execute();
+        $id_to_add = $res4->fetchAll();
+
+        $new_ids_insta = array_filter(explode(",", $id_existing[0]['instagram']));
+        array_push($new_ids_insta, $id_to_add[0]['id_insta']);
+        $new_ids_insta = array_filter($new_ids_insta);
+
+        $new_ids_spotify = array_filter(explode(",", $id_existing[0]['spotify']));
+        array_push($new_ids_spotify, $id_to_add[0]['id_spotify']);
+        $new_ids_spotify = array_filter($new_ids_spotify);
+
+        $new_ids_twitch = array_filter(explode(",", $id_existing[0]['twitch']));
+        array_push($new_ids_twitch, $id_to_add[0]['id_twitch']);
+        $new_ids_twitch = array_filter($new_ids_twitch);
+
+        $new_ids_youtube = array_filter(explode(",", $id_existing[0]['youtube']));
+        array_push($new_ids_youtube, $id_influencer);
+        $new_ids_youtube = array_filter($new_ids_youtube);
+    }
+
+    $new_ids_insta = implode(",", $new_ids_insta);
+    $new_ids_twitch = implode(",", $new_ids_twitch);
+    $new_ids_spotify = implode(",", $new_ids_spotify);
+    $new_ids_youtube = implode(",", $new_ids_youtube);
+
+    //Update the database
+    $sql5 = "UPDATE following_data SET instagram = '$new_ids_insta', spotify = '$new_ids_spotify', twitch = '$new_ids_twitch', youtube = '$new_ids_youtube' WHERE id = $id_user";
+    $conn->query($sql5);
+
+    //Deconnect
+    $conn = NULL;
 }
 
 
-//Function A3
-//@requires : A JSON file with the influencers, a JSON file with the users, the id of an influencer and the id of an user
-//@assigns : Assigns the JSON file of the influencers. 
-//The function delete the user of the given id from the array of followers of the influencer 
-//@returns : 1 if the file of the influencers was modified and 0 otherwise
-//Throw an exception if the provided id do not exist
-function delete_follower(string $jsonfile_influencers, string $jsonfile_users, int $id_influencer, int $id_user){
-    //We decode the files
-    $jsonString_influencers = file_get_contents($jsonfile_influencers);
-    $data_influencers = json_decode($jsonString_influencers, true);
-    $jsonString_users = file_get_contents($jsonfile_users);
-    $data_users = json_decode($jsonString_users, true);
+//@requires : Name of the database the id of an user, id an influencer, name of social network ("instagram", "spotify", "twitch" or "youtube")
+//@assigns : Assigns the database 
+//delete the influencer from the list of favorites of the user. Only one id is deleted, the one of the given SN.
+//if the influencer was also followed on other SN, the associated ids remain
+//@returns : nothing
+function delete_favorite(string $database_name, int $id_user, int $id_influencer, string $SN){
+    //Connecting to the database
+    $conn = connectToDatabase($database_name);
 
-    //We check if the both id exist in the files
-    $test1 = -1;
-    $test2 = 0;
+    if ($SN == "instagram"){
 
-    foreach ($data_influencers as $a1) {
-        foreach($a1 as $a){
-            $test1++;
-        if ($a["id"] == $id_influencer) {
-            break;
+        $sql1 = "SELECT instagram FROM following_data WHERE id = $id_user";
+        $res1 = $conn->query($sql1);
+        $res1->execute();
+        $ids = $res1->fetchAll();
+
+        $ids = explode(",", $ids[0]['instagram']);
+        $pos = array_search($id_influencer, $ids);
+
+        unset($ids[$pos]);
+
+        $ids = implode(",", $ids);
+        //Update the database
+        $sql2 = "UPDATE following_data SET instagram = '$ids' WHERE id = $id_user";
+        $conn->query($sql2);
+    }
+
+    if ($SN == "twitch"){
+
+        $sql1 = "SELECT twitch FROM following_data WHERE id = $id_user";
+        $res1 = $conn->query($sql1);
+        $res1->execute();
+        $ids = $res1->fetchAll();
+
+        $ids = explode(",", $ids[0]['twitch']);
+        $pos = array_search($id_influencer, $ids);
+
+        unset($ids[$pos]);    
+
+        $ids = implode(",", $ids);
+        //Update the database
+        $sql2 = "UPDATE following_data SET twitch = '$ids' WHERE id = $id_user";
+        $conn->query($sql2);
+    }
+
+    if ($SN == "spotify"){
+
+        $sql1 = "SELECT spotify FROM following_data WHERE id = $id_user";
+        $res1 = $conn->query($sql1);
+        $res1->execute();
+        $ids = $res1->fetchAll();
+
+        $ids = explode(",", $ids[0]['spotify']);
+        $pos = array_search($id_influencer, $ids);
+
+        unset($ids[$pos]);       
+
+        $ids = implode(",", $ids);
+        //Update the database
+        $sql2 = "UPDATE following_data SET spotify = '$ids' WHERE id = $id_user";
+        $conn->query($sql2);
+    }
+
+    if ($SN == "youtube"){
+
+        $sql1 = "SELECT youtube FROM following_data WHERE id = $id_user";
+        $res1 = $conn->query($sql1);
+        $res1->execute();
+        $ids = $res1->fetchAll();
+
+        $ids = explode(",", $ids[0]['youtube']);
+        $pos = array_search($id_influencer, $ids);
+
+        unset($ids[$pos]);
+
+        $ids = implode(",", $ids);
+        //Update the database
+        $sql2 = "UPDATE following_data SET youtube = '$ids' WHERE id = $id_user";
+        $conn->query($sql2);
+    }
+
+    //Now we check if the removed influencer is still followed by a user.
+    //If it is the case, we remove this user from the database 
+
+    $sql3 = "SELECT $SN FROM following_data";
+    $res3 = $conn->query($sql3);
+    $res3 = $res3->fetchAll();
+
+    $test = TRUE;
+    foreach($res3 as $lignes){
+        $ids = explode(",", $lignes[0]);
+        $pos = array_search($id_influencer, $ids);
+        if ($pos !== FALSE){
+            $test = FALSE;
         }
-        
-    }
-    break;
-}
-    if ($test1 == -1){
-        throw new Exception("Influencer id not found");
-    }
-    foreach ($data_users as $a1) {
-        foreach($a1 as $a){
-        if ($a["id"] == $id_user) {
-            $test2=1;
-        }
-    }}
-    if ($test2 == 0){
-        throw new Exception("User id not found");
-    }
-    
-    //Now we modify the files 
-    //First we check if the influencer is not followed by the user
-    //number of persons following the influencer
-    $nb_followers = count($data_influencers["influenceurs_suivis"][$test1]["suivis_par"]);
-    //test
-    $index = 0;
-    $test3 = 0;
-    for($i = 0; $i < $nb_followers; $i++){
-        //We compare
-        if ($id_user == $data_influencers["influenceurs_suivis"][$test1]["suivis_par"][$i]){
-            //the influencer is followed by the user
-            //We just re-encode the JSON file of the influencer 
-            $test3 = 1;
-            $index = $i;
-
-        }
     }
 
-    if($test3 == 0){
-        $newJsonString = json_encode($data_influencers);
-        file_put_contents($jsonfile_influencers, $newJsonString);
-        return 0;
+    if ($test == TRUE){
+        $sql4 = "DELETE FROM $SN WHERE id = $id_influencer";
+        $conn->query($sql4);
     }
-    
-    //Finally we modify the file 
-    array_splice($data_influencers["influenceurs_suivis"][$test1]["suivis_par"], $index, 1);
-    $newJsonString = json_encode($data_influencers);
-    file_put_contents($jsonfile_influencers, $newJsonString);
-    return 1;
+
+    //Decennect
+    $conn = NULL;
 }
 
 ?>
