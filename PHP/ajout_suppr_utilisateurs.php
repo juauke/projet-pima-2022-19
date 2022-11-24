@@ -214,10 +214,29 @@ function delete_favorite(string $database_name, int $id_user, int $id_influencer
         $conn->query($sql2);
     }
 
+    //Now we check if the removed influencer is still followed by a user.
+    //If it is the case, we remove this user from the database 
+
+    $sql3 = "SELECT $SN FROM following_data";
+    $res3 = $conn->query($sql3);
+    $res3 = $res3->fetchAll();
+
+    $test = TRUE;
+    foreach($res3 as $lignes){
+        $ids = explode(",", $lignes[0]);
+        $pos = array_search($id_influencer, $ids);
+        if ($pos !== FALSE){
+            $test = FALSE;
+        }
+    }
+
+    if ($test == TRUE){
+        $sql4 = "DELETE FROM $SN WHERE id = $id_influencer";
+        $conn->query($sql4);
+    }
+
     //Decennect
     $conn = NULL;
 }
-
-
 
 ?>
