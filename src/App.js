@@ -78,6 +78,15 @@ constructor(props) {
 
 
   function TopBar(props) {
+    
+    if(sessionStorage.getItem("loggedin"))
+    {
+    <>
+    <h4 id="username"> Username </h4>
+    <LogButton Page="Log out" Link="../PHP/Gestion_Compte/logout.php"/>
+    </>
+    }
+    else{
     return<>
     <div className='topBar'>
     
@@ -88,7 +97,8 @@ constructor(props) {
      <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
      </div>
      </>
-  }
+    }
+}
 
 /**
  * Describe the state of the page and places all the needed beacons
