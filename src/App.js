@@ -3,6 +3,7 @@ import './App.css';
 import './SideBar.css';
 import './SearchBar.css';
 import './SocialNetwork.css';
+import './Fav.css';
 import React, { useState } from "react";
 import {SocialNetworkPage, YoutuberInfo}  from "./SocialNetworkMenu.js";
 import {MenuCross, MenuLink} from "./SideMenu.js";  
@@ -10,6 +11,7 @@ import SearchBar from "./SearchBar.js";
 import LogButton from "./UserConnexion.js";
 import {influenceurs} from "./SearchBar.js";
 import Jquery from "jquery"
+import FavPage from "./Fav.js";
 
 /* Function exported to render the page */
 
@@ -85,10 +87,18 @@ forceUpdate = () => {
       );
     }
 
+    else if (this.props.Page == 'Favoris') {
+      return(
+        <>
+        <FavPage/>
+        </>
+      )
+    }
+
     else if (this.props.Page == 'Statistiques') {
       return(<>
-      <StatImg Image="./data/abos_jdg.png"/>
-      <StatImg Image="./data/hist.png"/>
+      <StatImg Image="./images/abos_jdg.png"/>
+      <StatImg Image="./images/hist.png"/>
       </>);
     }
 
@@ -102,6 +112,21 @@ forceUpdate = () => {
 
 
   function TopBar(props) {
+    
+    if(sessionStorage.getItem("loggedin"))
+    {return <>
+      <div className='topBar'>
+    
+      <MenuCross onClick={props.onClick}/>
+       <h1 className='title'>{props.Page}</h1>
+       <h4 id="username"> {sessionStorage.getItem("username")} </h4>
+      <LogButton Page="Log out" Link="../PHP/Gestion_Compte/logout.php"/>
+       <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
+       </div>
+       </>
+
+    }
+    else{
     return<>
     <div className='topBar'>
     
@@ -110,9 +135,10 @@ forceUpdate = () => {
     <LogButton Page="Log in" Link="../PHP/Gestion_Compte/login.php"/>
     <LogButton Page="Sign in" Link="../PHP/Gestion_Compte/register.php"/>
      <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
-     </div>
+     </div> 
      </>
-  }
+    }
+}
 
 /**
  * Describe the state of the page and places all the needed beacons
@@ -144,7 +170,7 @@ handleToggleNav = () => {
           <MenuLink Page="Accueil" onClick={() => this.setState({curPage :'Accueil'})}/>
           <MenuLink Page="Statistiques" onClick={() => this.setState({curPage :'Statistiques'})}/>
           <MenuLink Page="Réseaux" onClick={() => this.setState({curPage :'Réseaux'})}/>
-          <MenuLink Page="A propos" onClick={() => this.setState({curPage :'A propos'})}/>
+          <MenuLink Page="Favoris" onClick={() => this.setState({curPage :'Favoris'})}/>
           </div>
         </aside>
   
