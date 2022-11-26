@@ -9,6 +9,7 @@ import {MenuCross, MenuLink} from "./SideMenu.js";
 import SearchBar from "./SearchBar.js";  
 import LogButton from "./UserConnexion.js";
 import {influenceurs} from "./SearchBar.js";
+import Jquery from "jquery"
 
 /* Function exported to render the page */
 
@@ -19,6 +20,9 @@ function App() {
   );
 }
 
+function StatImg(props){
+  return <img src={props.Image} class="statImg"></img>;
+}
 
 /**
  * 
@@ -30,24 +34,43 @@ class CurrentPage extends React.Component {
 
 constructor(props) {
   super(props);
-  this.state = {jdg : false}
+  this.state = {influenceur : [],jdg:false }
 }
+rerender = () => {
+  this.forceUpdate();
+};
+forceUpdate = () => {
+  this.setState((state) => ({
+    influenceur :influenceurs
+  }));
+};
 
  render() {
   //let influenceurs = [
   //  "Hubert Bonnisseur de la Bath",'Noël Flantier','Lucien Bramard','Larmina','Jack','Dolorès Koulechov','Heinrich','Sliman','Armand',"Joueur Du Grenier"
   //];
-    let influenceurs=[["Test","Test","Test","Test","Test","Test"],["Test2","Test2","Test2","Test2","Test2","Test2"]]
+    //let influenceurs=[["Test","Test","Test","Test","Test","Test"],["Test2","Test2","Test2","Test2","Test2","Test2"]]
+    const is_undefined=influenceurs!==undefined;
+    let e=document.querySelector("#results");
+    const nulel= e!=null;
+    const not_empty=influenceurs.length!==0;
     if (this.props.Page == 'Accueil')
     {
+      
       return(
         <>
         <div>
         {console.log(influenceurs)};
-        <SearchBar products={influenceurs} onClick={() => {this.setState({jdg : true})}}/>
-        <div>
-        {influenceurs.map(i=>
-          <YoutuberInfo Name={i[0]} Image={i[4]}  Follower={i[2]}  NombreVideos={i[3]}  NombreVues={i[1]} Link="https://www.youtube.com/user/joueurdugrenier" />)}
+        <SearchBar products={influenceurs} rerender={this.rerender} onChange={() => {alert(1)}} />
+        <div id="results">
+        {/*(()=> {
+          if(nulel){
+            e.innerHTML=""
+          }
+        })()*/}
+        {is_undefined && not_empty &&
+        influenceurs.map(i=>
+          <YoutuberInfo Name={i[0]} Image={i[4]}  Follower={i[2]}  NombreVideos={i[3]}  NombreVues={i[1]} Link={i[5]} />)}
         </div>
       </div>
         </>
@@ -61,6 +84,14 @@ constructor(props) {
       </>
       );
     }
+
+    else if (this.props.Page == 'Statistiques') {
+      return(<>
+      <StatImg Image="./data/abos_jdg.png"/>
+      <StatImg Image="./data/hist.png"/>
+      </>);
+    }
+
 
     else return(<></>);
 
@@ -77,7 +108,8 @@ constructor(props) {
     <MenuCross onClick={props.onClick}/>
      <h1 className='title'>{props.Page}</h1>
     <LogButton Page="Log in" Link="../PHP/Gestion_Compte/login.php"/>
-     <h1 className='shriimpeTitle'><em> Shriimpe </em></h1>
+    <LogButton Page="Sign in" Link="../PHP/Gestion_Compte/register.php"/>
+     <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
      </div>
      </>
   }

@@ -6,7 +6,7 @@ import Jquery from "jquery";
  * Create the SearchBar
  */
  function SearchBar(props) {
-
+    //let influenceurs=[];
     /*An additional function to work with the new format of influenceurs*/
     function find_name(influenceur_pseudo){
       let influenceurs = [
@@ -27,46 +27,92 @@ import Jquery from "jquery";
     }
   
     const [searchVal, setSearchVal] = React.useState('');
-    
-    const handleInput = (e) => {
-      let influenceurs=[];
+    const handleInput= (e) => {
+      Jquery.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': Jquery('meta[name="csrf-token"]').attr('content')
+        }
+    });
       setSearchVal(e.target.value);
+      console.log(e.target.value);
+      influenceurs=[];
       Jquery.ajax({
          type: 'POST',
          url:'../PHP/barre_recherche.php',
           data : {"name":e.target.value}
       }).done(function (data) {
-        console.log(data);
           if (data=='1'){
             Jquery.ajax({
-              type: 'POST',
+              type: 'GET',
               url:'../PHP/Connexion_API/Connect_api_youtube.php',
-               data : {"name":e.target.value}
-           }).done(function (data) {
-            influenceurs.push(data);
-
-
-           })
+              async: false,
+               data : {"name":e.target.value},
+           success:function (data) {
+            var len=data.length;
+            var l=JSON.parse(data);
+            console.log(data);
+            if(data!="null"){
+            influenceurs.push([l.name,l.pop,l.sub,l.vc,l.images,l.url]);}
+            //alert(influenceurs);
+           },
+           error : function(data,textStatus,errorThrown){
+            alert(errorThrown);
+            alert(textStatus);
+           }});        
            Jquery.ajax({
-            type: 'POST',
+            type: 'GET',
             url:'../PHP/Connexion_API/Connect_api_Spotify.php',
-             data : {"name":e.target.value}
-         }).done(function (data) {
-          influenceurs.push(data);
+            async: false,
+             data : {"name":e.target.value},
+             success:function (data) {
+              var l=JSON.parse(data);
+              console.log(data);
+              if(data!=null){
+              influenceurs.push([l.name,l.pop,l.sub,l.vc,l.images,l.url]);}
+                //influenceurs.push([data[i].name,data[i].pop,data[i].sub,data[i].vc,data[i].images])
 
-         })
+              //alert(influenceurs);
+             },
+             error : function(data,textStatus,errorThrown){
+              alert(errorThrown);
+              alert(textStatus);
+             }}); 
          Jquery.ajax({
-          type: 'POST',
-          url:'../PHP/Connexion_API//Connect_api_twitch.php',
-           data : {"name":e.target.value}
-       }).done(function (data) {
-        influenceurs.push(data);
-       })
+          type: 'GET',
+          url:'../PHP/Connexion_API/Connect_api_twitch.php',
+          async: false,
+           data : {"name":e.target.value},
+           timeout : 10000000000,
+       success:function (data) {
+        var len=data.length;
+        console.log(data);
+        if(data!="NULL" && data !="Curl error: NULL" && data!=""){
+          var l=JSON.parse(data);
+          //console.log(l["name"]);
+          influenceurs.push([l.channel,l.pop,l.sub,l.vc,l.images,l.url]);
+        }
+        //alert(influenceurs);
+       },
+       error : function(data,textStatus,errorThrown){
+        alert(errorThrown);
+        alert(textStatus);
+       }}); 
+       props.rerender();
+       //alert(influenceurs);
           }
         else{
+          if(data!=""){
+          console.log(data);
+          var data2=data.split(',');
+          var arr=JSON.parse(data2);
+          console.log(arr);
+          arr.forEach(e=>influenceurs.push([e.username,e.nb_views,e.nb_subscribers,e.nb_videos,e.image,e.url]));}
+          props.rerender();
           
         }
       })
+      
+     
 
     }
     
@@ -74,9 +120,10 @@ import Jquery from "jquery";
       setSearchVal('');
     }
     
-    const filteredProducts = props.products.filter((product) => {
+    /*const filteredProducts = props.products.filter((product) => {
+
       return product.includes(searchVal);
-    });
+    });*/
     
     return (
       <div className='research'>
@@ -102,15 +149,10 @@ import Jquery from "jquery";
           ></i>
         </div>
         <div className="results-wrap">
-          <ul>
-            {filteredProducts.map((product) => {
-              return <li key={product} className='list-item' onClick={  props.onClick}><a href='#'>{product}</a></li>
-            })}
-          </ul>
         </div>
       </div>
     );
   }
 
   export default SearchBar;
-  export let influenceurs;
+  export var influenceurs=[];

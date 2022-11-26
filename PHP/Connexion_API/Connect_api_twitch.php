@@ -12,14 +12,19 @@ if ($keys) {
 // validate the token
 
 $ch = curl_init('https://id.twitch.tv/oauth2/validate');
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     'Authorization: OAuth ' . $keys->access_token
 ));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
+if(curl_exec($ch) === false)
+{
+    echo 'Curl error : ' . curl_error($ch);
+}
 $r = curl_exec($ch);
 //echo $r;
 $i = curl_getinfo($ch);
+//var_dump($i);
 curl_close($ch);
 
 if ($i['http_code'] == 200) {
@@ -32,11 +37,11 @@ if ($i['http_code'] == 200) {
         if ($data->expires_in < 3600) {
             // less than an hour left
             // make a new token
-            echo 'Token close to expire. Regenerate';
+           // echo 'Token close to expire. Regenerate';
             $generate_token = true;
         }
     } else {
-        echo 'Failed to parse JSON. Assume dead token';
+        //echo 'Failed to parse JSON. Assume dead token';
         $generate_token = true;
     }
 }
@@ -44,6 +49,7 @@ if ($i['http_code'] == 200) {
 
 if ($generate_token) {
 $ch = curl_init('https://id.twitch.tv/oauth2/token');
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -52,8 +58,13 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, array(
 'client_secret' => $secret_id,
 'grant_type' => "client_credentials"
 ));
+if(curl_exec($ch) === false)
+{
+    echo 'Curl error: ' . curl_error($ch);
+}
 $r = curl_exec($ch);
 $i = curl_getinfo($ch);
+//var_dump($i);
 curl_close($ch);
 
 if ($i['http_code'] == 200) {
@@ -65,18 +76,17 @@ if ($i['http_code'] == 200) {
         // store the token for next run
         file_put_contents(__DIR__ . '/auth.json', $r, JSON_PRETTY_PRINT);
     } else {
-        echo 'Failed to parse JSON';
+       // echo 'Failed to parse JSON';
     }
 } else {
-    echo 'Failed with ' . $i['http_code'] . ' ' . $r;
+    //echo 'Failed with ' . $i['http_code'] . ' ' . $r;
 }
 } else {
-echo 'Token OK';
-print_r($keys);
+//echo 'Token OK';
+//print_r($keys);
 }//Streamers username
 $ch = curl_init();
 //echo $keys->access_token;
-
 curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/users?login=$username");//Endpoint
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -85,11 +95,20 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     "Authorization: Bearer $keys->access_token",
     "Client-ID: $client_id"
 ));
+if(curl_exec($ch) === false)
+{
+    echo 'Curl error: ' . curl_error($ch);
+}
 $profile_data = json_decode(curl_exec($ch), true);
 
 $i=curl_getinfo($ch);
+//var_dump($i);
 curl_close($ch);
 //echo json_encode($profile_data);
+if(empty($profile_data["data"])){
+    return "NULL";
+}
+else{
 $id=$profile_data["data"][0]["id"];
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "https://api.twitch.tv/helix/users/follows?to_id=$id");//Endpoint
@@ -100,6 +119,11 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     "Authorization: Bearer $keys->access_token",
     "Client-ID: $client_id"
 ));
+if(curl_exec($ch) === false)
+{
+    echo 'Curl error: ' . curl_error($ch);
+}
+$i=curl_getinfo($ch);
 $data2=json_decode(curl_exec($ch), true);
 $nb_videos=0;
 $page_left=true;
@@ -120,6 +144,11 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     "Authorization: Bearer $keys->access_token",
     "Client-ID: $client_id"
 ));
+if(curl_exec($ch) === false)
+{
+    echo 'Curl error: ' . curl_error($ch);
+}
+
 $data3=json_decode(curl_exec($ch), true);
 $nb_videos+=(int) count($data3["data"]);
 //echo $nb_videos;
@@ -132,8 +161,12 @@ else{
     //echo json_encode($lien_vers_autre_page);
 }
 }
-return [$username,(int)json_encode($data2["total"]),$profile_data["data"][0]["view_count"],$nb_videos,$profile_data["data"][0]["profile_image_url"]];}
+return array("name"=>$username,"pop"=>(int)json_encode($data2["total"]),"sub"=>$profile_data["data"][0]["view_count"],"vc"=>$nb_videos,"images"=>$profile_data["data"][0]["profile_image_url"],"url"=>"https://www.twitch.tv/$username");}}
 
-$l=getStreamer("Etoiles");
-echo json_encode($l);
+$l=getStreamer($_GET["name"]);
+if($l!="NULL"){
+echo json_encode($l);}
+else{
+    echo "NULL";
+}
 ?>

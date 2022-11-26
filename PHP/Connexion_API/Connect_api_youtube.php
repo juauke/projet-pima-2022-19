@@ -1,13 +1,14 @@
 <?php
 $API_Key    = 'AIzaSyA5SEQPLYmy5cpSJCkHSmIeh_mfsSvVijk'; 
 $Channel_ID = 'UCuoKuTCQ9dmPIgOgyLm9HgQ'; 
-$username='mistervofficial';
+$username=$_GET["name"];
 $Max_Results = 10; 
  
 function getChannel($name,$key){
-    $apiData = @file_get_contents('https://www.googleapis.com/youtube/v3/channels?key='.$key.'&forUsername='.$name.'&part=id');
+    $apiData = @file_get_contents('https://www.googleapis.com/youtube/v3/channels?key='.$key.'&forUsername='.$name.'&part=id%2Csnippet&type=channel');
     if($apiData){ 
         $videoList = json_decode($apiData); 
+        //echo json_encode($videoList);
     }else{ 
         echo 'Invalid API key or channel ID.'; 
     }
@@ -15,6 +16,7 @@ function getChannel($name,$key){
         foreach($videoList->items as $item){
             if(isset($item->id)){
                 $id=$item->id;
+                $url2=$item->snippet->customUrl;
             }
         } 
     }
@@ -26,7 +28,7 @@ function getChannel($name,$key){
     else{
         return "marche pas";
     }
-    $url = "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items%2Fsnippet%2Fthumbnails%2Fdefault&id=UCuoKuTCQ9dmPIgOgyLm9HgQ&key=AIzaSyA5SEQPLYmy5cpSJCkHSmIeh_mfsSvVijk";
+    $url = "https://www.googleapis.com/youtube/v3/channels?part=snippet&fields=items%2Fsnippet%2Fthumbnails%2Fdefault&id=$Channel_ID&key=AIzaSyA5SEQPLYmy5cpSJCkHSmIeh_mfsSvVijk";
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,$url);
@@ -42,7 +44,7 @@ function getChannel($name,$key){
         if($y==4){
             $cas_spec=(array)$c[0];
             $statistics=(array)($cas_spec['statistics']);
-            return ([$name,$statistics['viewCount'],$statistics['subscriberCount'],$statistics['videoCount'],$thumbnail_url]);
+            return (array("name"=>$name,"pop"=>$statistics['viewCount'],"sub"=>$statistics['subscriberCount'],"vc"=>$statistics['videoCount'],"images"=>$thumbnail_url,"url"=>"https://youtube.com/$url2"));
     }
     }
     
