@@ -7,21 +7,52 @@ require("db.php");
 //@returns : Results of the SQL query
 function Search_Bar_PHP(string $database_name, string $word){
     //Connecting to the database
+    if($word!=""){
+    $res_final=[];
     $conn = connectToDatabase($database_name);
-
     //Preparing the request
-    $stmt = $conn->query("SELECT * FROM (((instagram LEFT JOIN twitch ON instagram.id_twitch = twitch.id) LEFT JOIN spotify ON instagram.id_spotify = spotify.id) LEFT JOIN youtube ON instagram.id_youtube = youtube.id) WHERE (instagram.username LIKE 'in%' OR twitch.username LIKE 'in%' OR spotify.username LIKE 'in%' OR youtube.channel LIKE 'in%')");
+    $stmt = $conn->query("SELECT * FROM  youtube where youtube.channel LIKE '%$word'");
 
     //Executing the request
     $stmt->execute();
 
     //Saving the result
-    $resultSet = $stmt->fetchAll();
+    foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $cours){
+	    $res_final[]=$cours;
+    }
 
-    var_dump($resultSet);
+    $stmt = $conn->query("SELECT * FROM  twitch where twitch.username LIKE '%$word'");
 
-    return $resultSet;
+    //Executing the request
+    $stmt->execute();
+    foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $cours){
+	    $res_final[]=$cours;
+    }
+
+    $stmt = $conn->query("SELECT * FROM  spotify where spotify.username LIKE '%$word'");
+
+    //Executing the request
+    $stmt->execute();
+
+    //Saving the result
+    foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $cours){
+	    $res_final[]=$cours;
+    }
+    return $res_final;}
+    else{
+        return "";
+    }
 }
 
-Search_Bar_PHP("alexandre", "in");
+$res=Search_Bar_PHP("utilisateurs", $_POST["name"]);
+if($res==[]){
+    echo '1';
+}
+else if($res==""){
+    echo "";
+}
+else{
+    //echo '1';
+    echo json_encode($res);
+}
 ?>

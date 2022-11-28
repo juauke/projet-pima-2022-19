@@ -1,3 +1,4 @@
+
 <?php
 // Include config file
 require_once "../db.php";
@@ -99,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Prepare the call of the add user routine
         $sql = "INSERT INTO `primary_data` (username, email, passwd) VALUES (:username, :email, :password)"; // "CALL ADD_USER (:username, :email, :password)";
-        
+
         if ($stmt = $pdo->prepare($sql)) {
             // Bind variables to the prepared statement as parameters
             $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
@@ -130,7 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -146,7 +146,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
+<<<<<<< HEAD
 <div id="particles-js">
+=======
+
+<div id="particles-js"></div>
+  
+
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
   <script type="text/javascript">
     //Fonction pour l'arrière plan
       $(document).ready(function () {
@@ -265,10 +272,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 )
   </script>
+<<<<<<< HEAD
 </div>
 
 <a href="welcome.php" class="btn btn-secondary">Retour à l'accueil</a>
 
+=======
+<div class="center">
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
 <div class="wrapper">
     <h2>S'inscrire</h2>
     <p>Merci de remplir ce formulaire pour créer un compte.</p>
@@ -299,6 +310,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <p>Vous avez déjà un compte ? <a href="login.php">Connectez-vous ici</a>.</p>
     </form>
+</div>
 </div>
 </body>
 </html>

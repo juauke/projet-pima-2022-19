@@ -48,7 +48,7 @@ function Spotify(string $artiste){
     
     $artist = $artiste;
     
-    $spotifyURL = 'https://api.spotify.com/v1/search?q='.urlencode($artist).'&type=artist';
+    $spotifyURL = 'https://api.spotify.com/v1/search?q='.urlencode($artist).'&type=artist&limit=1';
     
     $ch2 = curl_init();
     
@@ -60,13 +60,23 @@ function Spotify(string $artiste){
     curl_setopt($ch2, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
     $json2 = curl_exec($ch2);
-    $json2 = json_decode($json2);
+    $json2 = json_decode($json2,true);
     curl_close($ch2);
     
     #echo '<pre>'.print_r($json2, true).'</pre>';
 
-    return json_encode($json2);
+    return $json2;
 
+}
+$i=Spotify($_GET["name"]);
+if($i!="NULL"){
+$i2=$i["artists"]["items"];
+foreach($i2 as $l){
+    echo json_encode(array("name"=>$l["name"],"pop"=>$l["popularity"],"sub"=>$l["followers"]["total"],"vc"=>"indéfini","images"=>$l["images"][0]["url"],"url"=>$l["external_urls"]["spotify"]),JSON_UNESCAPED_UNICODE);
+}
+}
+else{
+    echo "null";
 }
 
 ?>

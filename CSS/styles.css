@@ -1,0 +1,40 @@
+#particles-js{
+    z-index: -1;
+    
+}
+canvas{
+    z-index: -1;
+    background:#000000;
+    position:absolute;
+    top:0;
+    left:0;
+
+}
+section{
+    display: flex;
+    text-align: center;
+}
+body{
+    margin:0;
+    padding:0;
+  }
+h1,label,p,h2{
+    color:white;
+}
+a{
+    color:greenyellow;
+}
+
+a{
+
+    text-decoration: none;
+}
+.center{
+    margin-top: 5em;
+    margin-left: 44%;
+    margin-right: 45%;
+}
+header{
+    text-align: center;
+    z-index: 1;
+}

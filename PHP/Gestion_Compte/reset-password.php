@@ -20,6 +20,7 @@ $email = "";
 $email_err = $query_err = "";
 
 // Processing form data when form is submitted
+<<<<<<< HEAD
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Check if username is empty
@@ -176,6 +177,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       unset($stmt);
       unset($stmt2);
       }
+=======
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+  // Validate new password
+  if(empty(trim($_POST["new_password"]))){
+      $new_password_err = "Veuillez entrer le nouveau mot de passe.";
+  } elseif(strlen(trim($_POST["new_password"])) < 6){
+      $new_password_err = "Un mot de passe doit contenir au moins 6 caractères.";
+  } else{
+      $new_password = trim($_POST["new_password"]);
+  }
+
+  // Validate confirm password
+  if(empty(trim($_POST["confirm_password"]))){
+      $confirm_password_err = "Veuillez confirmer le mot de passe.";
+  } else{
+      $confirm_password = trim($_POST["confirm_password"]);
+      if(empty($new_password_err) && ($new_password != $confirm_password)){
+          $confirm_password_err = "Les mots de passe ne correspondent pas.";
+      }
+  }
+
+  // Check input errors before updating the database
+  if(empty($new_password_err) && empty($confirm_password_err)){
+      // Prepare an update statement
+      $sql = "UPDATE users SET password = ? WHERE id = ?";
+
+      if($stmt = mysqli_prepare($link, $sql)){
+          // Bind variables to the prepared statement as parameters
+          mysqli_stmt_bind_param($stmt, "si", $param_password, $param_id);
+
+          // Set parameters
+          $param_password = password_hash($new_password, PASSWORD_DEFAULT);
+          $param_id = $_SESSION["id"];
+
+          // Attempt to execute the prepared statement
+          if(mysqli_stmt_execute($stmt)){
+              // Password updated successfully. Destroy the session, and redirect to login page
+              session_destroy();
+              header("location: login.php");
+              exit();
+          } else{
+              echo "Oups ! Quelque chose s'est mal passée. Merci de réessayer ultérieurement..";
+          }
+
+          // Close statement
+          mysqli_stmt_close($stmt);
+      }
+  }
+
+  // Close connection
+  mysqli_close($link);
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
 }
 
   // Close connection
@@ -188,18 +242,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>Demande de mot de passe temporaire</title>
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="particles.js"></script>
 
+=======
+    <title>Réinitialisation du mot de passe</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="JS/particles.js"></script>
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
     <style>
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
 <div id="particles-js">
+=======
+
+<div id="particles-js"></div>
+  
+
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
   <script type="text/javascript">
     //Fonction pour l'arrière plan
       $(document).ready(function () {
@@ -318,10 +387,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 )
   </script>
+<<<<<<< HEAD
 </div>
 
 <a href="welcome.php" class="btn btn-secondary">Retour à l'accueil</a>
 
+=======
+</head>
+<body>
+<div class="center">
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
 <div class="wrapper">
     <h2>Demande de mot de passe temporaire</h2>
     <p>Merci d'indiquer votre adresse email afin de recevoir un mot de passe temporaire.</p>
@@ -339,9 +414,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span class="invalid-feedback"><?php echo $email_err; ?></span>
         </div>
         <div class="form-group">
+<<<<<<< HEAD
             <input type="submit" class="btn btn-primary" value="Demander un mot de passe temporaire">
+=======
+            <input type="submit" class="btn btn-primary" value="Soumettre">
+            <a class="btn btn-link ml-2" href="welcome.php">Annuler</a>
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
         </div>
     </form>
+</div>
 </div>
 </body>
 </html>

@@ -9,6 +9,8 @@ import {SocialNetworkPage, YoutuberInfo}  from "./SocialNetworkMenu.js";
 import {MenuCross, MenuLink} from "./SideMenu.js";  
 import SearchBar from "./SearchBar.js";  
 import LogButton from "./UserConnexion.js";
+import {influenceurs} from "./SearchBar.js";
+import Jquery from "jquery"
 import FavPage from "./Fav.js";
 
 /* Function exported to render the page */
@@ -34,21 +36,56 @@ class CurrentPage extends React.Component {
 
 constructor(props) {
   super(props);
-  this.state = {jdg : false}
+  this.state = {influenceur : [],jdg:false }
 }
+rerender = () => {
+  this.forceUpdate();
+};
+forceUpdate = () => {
+  this.setState((state) => ({
+    influenceur :influenceurs
+  }));
+};
 
  render() {
-  let influenceurs = [
-    "Hubert Bonnisseur de la Bath",'Noël Flantier','Lucien Bramard','Larmina','Jack','Dolorès Koulechov','Heinrich','Sliman','Armand',"Joueur Du Grenier"
-  ];
+  //let influenceurs = [
+  //  "Hubert Bonnisseur de la Bath",'Noël Flantier','Lucien Bramard','Larmina','Jack','Dolorès Koulechov','Heinrich','Sliman','Armand',"Joueur Du Grenier"
+  //];
+    //let influenceurs=[["Test","Test","Test","Test","Test","Test"],["Test2","Test2","Test2","Test2","Test2","Test2"]]
+    const is_undefined=influenceurs!==undefined;
+    let e=document.querySelector("#results");
+    const nulel= e!=null;
+    const not_empty=influenceurs.length!==0;
+
+    var session;
+    Jquery.ajaxSetup({cache: false})
+    Jquery.ajax({
+      url: 'PHP/getsession.php',
+      success: function (data) {
+        session = data;
+      },
+      async: false
+    });
+    var sessionObj = JSON.parse(session);
+ 
+
     if (this.props.Page == 'Accueil')
     {
+      
       return(
         <>
         <div>
-        <SearchBar products={influenceurs} onClick={() => {this.setState({jdg : true})}}/>
-        <div className={this.state.jdg ? 'resultSearch' : 'hide'}>
-        <YoutuberInfo Name="Joueur Du Grenier" Image="JDG_pic.jpg" Follower="3,72 M" NombreVideos="150" NombreVues="1 025 230 900 vues" Link="https://www.youtube.com/user/joueurdugrenier" />
+        {console.log(influenceurs)};
+        <SearchBar products={influenceurs} rerender={this.rerender} onChange={() => {alert(1)}} />
+        <div id="results">
+        {/*(()=> {
+          if(nulel){
+            e.innerHTML=""
+          }
+        })()*/}
+        {is_undefined && not_empty &&
+        influenceurs.map(i=>
+          <YoutuberInfo Name={i[0]} Image={i[4]}  Follower={i[2]}  NombreVideos={i[3]}  NombreVues={i[1]} Link={i[5]} />)}
         </div>
       </div>
         </>
@@ -64,6 +101,13 @@ constructor(props) {
     }
 
     else if (this.props.Page == 'Favoris') {
+      if (!sessionObj.loggedin){
+        return(<>
+        <p>Pour accéder à vos favoris veuillez vous <a href="../PHP/Gestion_Compte/login.php">connecter</a> ou <a href="../PHP/Gestion_Compte/register.php">créer un compte.</a></p>
+        </>)
+
+      }
+      else
       return(
         <>
         <FavPage/>
@@ -87,15 +131,28 @@ constructor(props) {
 
 
 
+
   function TopBar(props) {
-    
-    if(sessionStorage.getItem("loggedin"))
+    var session;
+    Jquery.ajaxSetup({cache: false})
+    Jquery.ajax({
+      url: 'PHP/getsession.php',
+      success: function (data) {
+        session = data;
+      },
+      async: false
+    });
+    var sessionObj = JSON.parse(session);
+ 
+
+
+    if(sessionObj.loggedin)
     {return <>
       <div className='topBar'>
     
       <MenuCross onClick={props.onClick}/>
        <h1 className='title'>{props.Page}</h1>
-       <h4 id="username"> {sessionStorage.getItem("username")} </h4>
+       <h4 id="username"> {sessionObj.username} </h4>
       <LogButton Page="Log out" Link="../PHP/Gestion_Compte/logout.php"/>
        <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
        </div>
@@ -111,7 +168,7 @@ constructor(props) {
     <LogButton Page="Log in" Link="../PHP/Gestion_Compte/login.php"/>
     <LogButton Page="Sign in" Link="../PHP/Gestion_Compte/register.php"/>
      <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
-     </div>
+     </div> 
      </>
     }
 }

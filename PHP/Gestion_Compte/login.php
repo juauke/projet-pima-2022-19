@@ -3,11 +3,10 @@
 session_start();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: welcome.php");
     exit;
 }
-
 // Include config file
 require_once "../db.php";
 $pdo = connectToDatabase('utilisateurs');
@@ -37,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($username_err) && empty($password_err)) {
         // Prepare a select statement
         $sql = "SELECT id, username, passwd, email FROM `primary_data` WHERE username = :username";
-    
+
         if ($stmt = $pdo->prepare($sql)) {
             // Bind variables to the prepared statement as parameters
             $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
@@ -87,7 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Close connection
     unset($pdo);
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -97,15 +95,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Connexion</title>
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="jquery.min.js"></script>
+<<<<<<< HEAD
     <script type="text/javascript" src="particles.js"></script>
 
+=======
+<script type="text/javascript" src="particles.js"></script>
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
     <style>
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
 <div id="particles-js">
+=======
+
+<div id="particles-js"></div>
+  
+
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
   <script type="text/javascript">
     //Fonction pour l'arrière plan
       $(document).ready(function () {
@@ -246,7 +255,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <div class="form-group">
             <label>Mot de passe</label>
-            <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+            <input type="password" name="password" class="form-control <?php  echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
             <span class="invalid-feedback"><?php echo $password_err; ?></span>
         </div>
         <p><a href="reset-password.php" class="btn btn-warning">Mot de passe oublié ?</a></p>
@@ -255,6 +264,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <p>Vous n'avez pas de compte ? <a href="register.php">Inscrivez-vous dès maintenant</a>.</p>
     </form>
+</div>
 </div>
 </body>
 </html>

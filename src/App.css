@@ -48,6 +48,12 @@
   z-index: 150;
 }
 
+#username {
+  color: var(--lightBlue);
+  margin-right: 6px;
+  margin-top: 10px;
+}
+
 .title {
   color: var(--lightBlue);
   text-align: justify;
