@@ -1,5 +1,5 @@
 import React from "react";
-
+import Jquery from "jquery"
 
 
 class SocialNetworkMenu extends React.Component {
@@ -97,6 +97,29 @@ class SocialNetworkMenu extends React.Component {
     constructor(props) {
       super(props)
     }
+
+    addFav() {
+      var session;
+      Jquery.ajaxSetup({cache: false})
+      Jquery.ajax({
+        url: 'PHP/getsession.php',
+        success: function (data) {
+          session = data;
+        },
+        async: false
+      });
+      var sessionObj = JSON.parse(session);
+
+
+      jQuery.ajax({
+        url:"PHP/ajout_suppr_utilisateurs.php",
+        type:"post",
+        dataType:"json",
+        data: {action: "ADD", dbName: "utilisateurs", idUser: sessionObj.id, idInfluencer: ""}
+
+    });
+    }
+
   
     render() {
       return(<>
@@ -112,6 +135,8 @@ class SocialNetworkMenu extends React.Component {
       </>);
     }
   }
+  
+  
   
   
   class YoutubeNetworkContent extends React.Component {

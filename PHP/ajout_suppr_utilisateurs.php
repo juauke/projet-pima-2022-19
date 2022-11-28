@@ -239,4 +239,20 @@ function delete_favorite(string $database_name, int $id_user, int $id_influencer
     $conn = NULL;
 }
 
+
+$action = $_POST['action']
+$dbName =  $_POST['dbName'];
+$idUser = $_POST['idUser'];
+$idInfluencer = $_POST['idInfluencer'];
+$SocialN = $_POST['SocialN'];
+
+if($action = "ADD") {
+    add_favorite($dbname, $idUser, $idInfluencer, $SocialN);
+}
+
+else if($action = "REMOVE") {
+    delete_favorite($dbname, $idUser, $idInfluencer, $SocialN);
+}
+
+
 ?>
