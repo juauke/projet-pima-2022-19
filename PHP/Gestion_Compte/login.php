@@ -95,26 +95,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Connexion</title>
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="jquery.min.js"></script>
-<<<<<<< HEAD
     <script type="text/javascript" src="particles.js"></script>
 
-=======
-<script type="text/javascript" src="particles.js"></script>
->>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
     <style>
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
     </style>
 </head>
 <body>
-<<<<<<< HEAD
 <div id="particles-js">
-=======
-
-<div id="particles-js"></div>
-  
-
->>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
   <script type="text/javascript">
     //Fonction pour l'arrière plan
       $(document).ready(function () {
