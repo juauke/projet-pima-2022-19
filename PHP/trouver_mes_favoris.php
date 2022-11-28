@@ -40,4 +40,18 @@ function find_influencers_of_user(string $database_name, int $id_user){
     return $final_res;
 }
 
+session_start();
+
+
+if (isset($_SESSION['id']))
+{
+
+
+$res = find_influencers_of_user("utilisateurs", $_SESSION["id"]);
+$_SESSION['Fav'] = json_encode($res);
+
+}
+
+
+
 ?>
