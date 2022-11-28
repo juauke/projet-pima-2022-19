@@ -111,7 +111,7 @@ class SocialNetworkMenu extends React.Component {
       var sessionObj = JSON.parse(session);
 
 
-      jQuery.ajax({
+      Jquery.ajax({
         url:"PHP/ajout_suppr_utilisateurs.php",
         type:"post",
         dataType:"json",
