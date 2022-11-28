@@ -1,5 +1,5 @@
 import React from "react";
-
+import Jquery from "jquery"
 
 
 class SocialNetworkMenu extends React.Component {
