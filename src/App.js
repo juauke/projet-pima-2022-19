@@ -103,7 +103,7 @@ forceUpdate = () => {
     else if (this.props.Page == 'Favoris') {
       if (!sessionObj.loggedin){
         return(<>
-        <p>Pour accéder à vos favoris veuillez vous <a href="../PHP/Gestion_Compte/login.php">connecter</a> ou <a href="../PHP/Gestion_Compte/register.php">créer un compte.</a></p>
+        <p className='favPlacehold'>Pour accéder à vos favoris veuillez vous <a href="../PHP/Gestion_Compte/login.php">connecter</a> ou <a href="../PHP/Gestion_Compte/register.php">créer un compte.</a></p>
         </>)
 
       }
