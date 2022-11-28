@@ -13,11 +13,7 @@
     position: relative;
 }
 
-.NavBarButton:hover {
-    background-color: white;
-    color: var(--black);
-    border: 2px solid var(--black);
-}
+
 
 @media screen and (min-width: 768px) {
     .NavBar {
@@ -49,6 +45,12 @@
         color: var(--lightBlue);
         position: relative;
     }
+}
+
+.NavBarButton:hover {
+    background-color: white;
+    color: var(--black);
+    border: 2px solid var(--black);
 }
 
 @media screen and (min-width: 576px) and (max-width: 768px) {
