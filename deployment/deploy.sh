@@ -4,6 +4,7 @@
 # Update the repository
 cd ~/projet-pima-2022-19
 git pull
+npm run build
 
 cp -r PHP ../shriimpe
 cp -r build/* ../shriimpe
