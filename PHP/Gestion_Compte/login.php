@@ -95,17 +95,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Connexion</title>
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="jquery.min.js"></script>
+<<<<<<< HEAD
+    <script type="text/javascript" src="particles.js"></script>
+
+=======
 <script type="text/javascript" src="particles.js"></script>
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
     <style>
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
+<div id="particles-js">
+=======
 
 <div id="particles-js"></div>
   
 
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
   <script type="text/javascript">
     //Fonction pour l'arrière plan
       $(document).ready(function () {
@@ -224,9 +233,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 )
   </script>
-</head>
-<body>
-<div class="center">
+</div>
+
+<a href="welcome.php" class="btn btn-secondary">Retour à l'accueil</a>
+
 <div class="wrapper">
     <h2>Connexion</h2>
     <p>Merci d'indiquer vos informations de connexion.</p>
