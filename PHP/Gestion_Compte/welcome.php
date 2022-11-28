@@ -21,6 +21,10 @@ $username = $_SESSION["username"];
 
 }
 
+header("location: ../../index.html");
+exit;
+
+?>
 
 
 

@@ -121,4 +121,41 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .boutonFavoris {
+    position: relative;
+    background-color: var(--darkGrey);
+    border: none;
+    font-size: 28px;
+    color: #FFFFFF;
+    padding: 20px;
+    width: 100px;
+    text-align: center;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+  .boutonFavoris:after {
+    content: "";
+    background: var(--lightBlue);
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px!important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+  }
+  
+  .boutonFavoris:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+  }
   

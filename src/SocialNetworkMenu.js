@@ -107,6 +107,7 @@ class SocialNetworkMenu extends React.Component {
       <p className='influenceurVids'>Nombre de vidéos publiées : {this.props.NombreVideos}</p>
       <p className='influenceurVues'>Nombre de vues : <br/>{this.props.NombreVues}</p>
       <a className='influenceurLink' href={this.props.Link}>{this.props.Link}</a>
+      <button className="boutonFavoris"><img src="favourite.png" width="50px"></img></button>
       </div>
       </>);
     }
