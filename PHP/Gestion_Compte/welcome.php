@@ -4,7 +4,6 @@ session_start();
 
 header("location: ../../index.html");
 exit;
-
 if (isset($_SESSION["loggedin"]))
 {
 $id = $_SESSION["loggedin"];
@@ -30,3 +29,5 @@ sessionStorage.setItem("username",<?php echo $username; ?>);
 sessionStorage.setItem("id",<?php echo $id; ?>);
 
 </script>
+
+?>
