@@ -56,6 +56,19 @@ forceUpdate = () => {
     let e=document.querySelector("#results");
     const nulel= e!=null;
     const not_empty=influenceurs.length!==0;
+
+    var session;
+    Jquery.ajaxSetup({cache: false})
+    Jquery.ajax({
+      url: 'PHP/getsession.php',
+      success: function (data) {
+        session = data;
+      },
+      async: false
+    });
+    var sessionObj = JSON.parse(session);
+ 
+
     if (this.props.Page == 'Accueil')
     {
       
@@ -88,6 +101,13 @@ forceUpdate = () => {
     }
 
     else if (this.props.Page == 'Favoris') {
+      if (!sessionObj.loggedin){
+        return(<>
+        <p>Pour accéder à vos favoris veuillez vous <a href="../PHP/Gestion_Compte/login.php">connecter</a> ou <a href="../PHP/Gestion_Compte/register.php">créer un compte.</a></p>
+        </>)
+
+      }
+      else
       return(
         <>
         <FavPage/>
@@ -111,15 +131,28 @@ forceUpdate = () => {
 
 
 
+
   function TopBar(props) {
-    
-    if(sessionStorage.getItem("loggedin"))
+    var session;
+    Jquery.ajaxSetup({cache: false})
+    Jquery.ajax({
+      url: 'PHP/getsession.php',
+      success: function (data) {
+        session = data;
+      },
+      async: false
+    });
+    var sessionObj = JSON.parse(session);
+ 
+
+
+    if(sessionObj.loggedin)
     {return <>
       <div className='topBar'>
     
       <MenuCross onClick={props.onClick}/>
        <h1 className='title'>{props.Page}</h1>
-       <h4 id="username"> {sessionStorage.getItem("username")} </h4>
+       <h4 id="username"> {sessionObj.username} </h4>
       <LogButton Page="Log out" Link="../PHP/Gestion_Compte/logout.php"/>
        <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
        </div>
