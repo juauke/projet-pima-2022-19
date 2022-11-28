@@ -44,7 +44,7 @@ function Search_Bar_PHP(string $database_name, string $word){
     }
 }
 
-$res=Search_Bar_PHP("alexandre", $_POST["name"]);
+$res=Search_Bar_PHP("utilisateurs", $_POST["name"]);
 if($res==[]){
     echo '1';
 }
