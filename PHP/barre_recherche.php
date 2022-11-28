@@ -11,7 +11,7 @@ function Search_Bar_PHP(string $database_name, string $word){
     $res_final=[];
     $conn = connectToDatabase($database_name);
     //Preparing the request
-    $stmt = $conn->query("SELECT * FROM  youtube where youtube.channel LIKE '%$word'");
+    $stmt = $conn->query("SELECT * FROM  youtube where youtube.username LIKE '%$word'");
 
     //Executing the request
     $stmt->execute();
