@@ -49,9 +49,10 @@
 }
 
 #username {
+  position: relative;
   color: var(--lightBlue);
-  margin-right: 6px;
-  margin-top: 10px;
+  margin-right: 25px;
+  margin-top: 20px;
 }
 
 .title {
@@ -82,8 +83,8 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  width: 4%;
-  height: 50%;
+  width: 7%;
+  height: 70%;
   position: relative;
   margin-right: 1%;
   background-color: var(--black);
