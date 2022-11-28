@@ -1,20 +1,183 @@
-<?php
-// Initialize the session
-session_start();
-// Check if the user is logged in, otherwise redirect to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-  header("location: login.php");
-  exit;
-}
+<?php 
 
-// Include config file
-require_once "config.php";
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require '../dependencies/PHPMailer-master/src/Exception.php';
+require '../dependencies/PHPMailer-master/src/PHPMailer.php';
+require '../dependencies/PHPMailer-master/src/SMTP.php';
+
+
+// Connect to database
+require_once("../db.php");
+$pdo = connectToDatabase('utilisateurs');
 
 // Define variables and initialize with empty values
-$new_password = $confirm_password = "";
-$new_password_err = $confirm_password_err = "";
+$email = "";
+$email_err = $query_err = "";
 
 // Processing form data when form is submitted
+<<<<<<< HEAD
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+  // Check if username is empty
+  if (empty(trim($_POST["email"]))) {
+    $email_err = "Veuillez entrer votre adresse email.";
+  } elseif (!filter_var(trim($_POST["email"]), FILTER_VALIDATE_EMAIL)) {
+    $email_err = "Veuillez entrer une adresse mail valide.";
+  } else {
+    $email = trim($_POST["email"]);
+  }
+
+  // Validate email
+  if (empty($email_err)) {
+    // Prepare a select statement
+    $sql = "SELECT id, email FROM `primary_data` WHERE email = :email";
+
+    if ($stmt = $pdo->prepare($sql)) {
+      // Bind email to the prepared statement as parameter
+      $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
+
+      // Set parameters
+      $param_email = $email;
+
+      // Attempt to execute the prepared statement
+      if ($stmt->execute()) {
+        // Check if email exists, if so start process
+        if ($stmt->rowCount() == 1) {
+          // Prepare the update statement
+          $sql2="UPDATE `primary_data` SET passwd = :password WHERE email = :email";
+
+          if ($stmt2 = $pdo->prepare($sql2)) {
+            // Bind email to the prepared statement as parameter
+            $stmt2->bindParam(':email', $email);
+
+            // Generate new password
+            $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $max_len = strlen($chars);
+            $new_password = '';
+            for ($i = 0; $i < 10; $i++) {
+                $new_password .= $chars[rand(0, $max_len - 1)];
+            }
+            
+            $hash = password_hash($new_password, PASSWORD_DEFAULT);
+
+            // Bind new password to the prepared statement as parameter
+            $stmt2->bindParam(':password', $hash);
+
+            // Attempt to execute the prepared statement
+            // If executed, then send an email with new password
+            if ($stmt2->execute()) {
+
+              $our_email = 'shriimpe@gmail.com';
+
+              // Retrieve username from email
+              $parts = explode('@', $email);
+              $username = $parts[0];
+              
+              $entetes='From: '.$our_email;
+
+              //Create a new PHPMailer instance; passing `true` enables exceptions
+              $mail = new PHPMailer(true);
+
+              try {
+                  
+                  //Server settings
+              
+                  //Enable SMTP debugging
+                  //SMTP::DEBUG_OFF = off (for production use)
+                  //SMTP::DEBUG_CLIENT = client messages
+                  //SMTP::DEBUG_SERVER = client and server messages
+                  $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+              
+                  //Tell PHPMailer to use SMTP                    
+                  $mail->isSMTP();                                            
+              
+                  $mail->SMTPOptions = array(
+                      'ssl' => array(
+                      'verify_peer' => false,
+                      'verify_peer_name' => false,
+                      'allow_self_signed' => true
+                      )
+                      );
+              
+                  //Set the hostname of the mail server
+                  $mail->Host = 'smtp.gmail.com';
+                  //Use `$mail->Host = gethostbyname('smtp.gmail.com');`
+                  //if your network does not support SMTP over IPv6,
+                  //though this may cause issues with TLS
+              
+                  //Whether to use SMTP authentication
+                  $mail->SMTPAuth = true;
+                  
+                  //Username to use for SMTP authentication - use full email address for gmail
+                  $mail->Username   = $our_email;
+              
+                  //Password to use for SMTP authentication
+                  $mail->Password   = 'yzyityuqycfrdwul';
+              
+                  //Set the encryption mechanism to use:
+                  // - SMTPS (implicit TLS on port 465) or
+                  // - STARTTLS (explicit TLS on port 587)
+                  $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+              
+                  //Set the SMTP port number:
+                  // - 465 for SMTP with implicit TLS, a.k.a. RFC8314 SMTPS or
+                  // - 587 for SMTP+STARTTLS
+                  $mail->Port = 465;
+                  //Recipients
+                  
+                  //Set who the message is to be sent from
+                  //Note that with gmail you can only use your account address (same as `Username`)
+                  //or predefined aliases that you have configured within your account.
+                  //Do not use user-submitted addresses in here
+                  $mail->setFrom($our_email, 'Shriimpe');
+              
+                  //Set who the message is to be sent to
+                  $mail->addAddress($email, $username);
+              
+                  //Set an alternative reply-to address
+                  //This is a good place to put user-submitted addresses
+                  $mail->addReplyTo($our_email, 'Shriimpe');
+              
+                  // $mail->addCC('juauke@gmail.com');
+                  $mail->addBCC($our_email);
+              
+                  //Content
+                  $mail->isHTML(true);                                        //Set email format to HTML
+                  $mail->Subject = 'Votre mot de passe';
+                  $mail->msgHTML('<p>Bonjour</p><br>Veuillez trouver ci-joint votre mot de passe temporaire : '.$new_password);
+                  $mail->AltBody = 'Bonjour, veuillez trouver ci-joint votre mot de passe temporaire : '.$new_password;
+              
+                  $mail->send();
+                  
+                  echo 'Un mail vient de vous être envoyé';
+              
+              } catch (Exception $e) {
+                  echo "L'email n'a pas pu être envoyé. Erreur du Mailer : {$mail->ErrorInfo}";
+              }}
+
+              header("location: login.php");
+              
+            } else {
+              echo "Oups ! Quelque chose s'est mal passée. Merci de réessayer ultérieurement.";
+            } 
+        } else {
+          echo "Oups ! Quelque chose s'est mal passée. Merci de réessayer ultérieurement.";
+        }
+      } else {
+        // Email doesn't exist, display a generic error message
+        $query_err = "Adresse mail invalide.";
+      }
+
+      // Close statements
+      unset($stmt);
+      unset($stmt2);
+      }
+=======
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   // Validate new password
@@ -66,28 +229,46 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   // Close connection
   mysqli_close($link);
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
 }
+
+  // Close connection
+  unset($pdo);
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
+    <title>Demande de mot de passe temporaire</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="particles.js"></script>
+
+=======
     <title>Réinitialisation du mot de passe</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript" src="JS/particles.js"></script>
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
     <style>
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
+<div id="particles-js">
+=======
 
 <div id="particles-js"></div>
   
 
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
   <script type="text/javascript">
     //Fonction pour l'arrière plan
       $(document).ready(function () {
@@ -206,26 +387,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 )
   </script>
+<<<<<<< HEAD
+</div>
+
+<a href="welcome.php" class="btn btn-secondary">Retour à l'accueil</a>
+
+=======
 </head>
 <body>
 <div class="center">
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
 <div class="wrapper">
-    <h2>Réinitialisation du mot de passe</h2>
-    <p>Veuillez remplir ce formulaire pour réinitialiser votre mot de passe.</p>
+    <h2>Demande de mot de passe temporaire</h2>
+    <p>Merci d'indiquer votre adresse email afin de recevoir un mot de passe temporaire.</p>
+
+    <?php
+    if (!empty($query_err)) {
+        echo '<div class="alert alert-danger">' . $query_err . '</div>';
+    }
+    ?>
+
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <div class="form-group">
-            <label>Nouveau mot de passe</label>
-            <input type="password" name="new_password" class="form-control <?php echo (!empty($new_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $new_password; ?>">
-            <span class="invalid-feedback"><?php echo $new_password_err; ?></span>
+            <label>Email</label>
+            <input type="text" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
+            <span class="invalid-feedback"><?php echo $email_err; ?></span>
         </div>
         <div class="form-group">
-            <label>Confirmation mot de passe</label>
-            <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>">
-            <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
-        </div>
-        <div class="form-group">
+<<<<<<< HEAD
+            <input type="submit" class="btn btn-primary" value="Demander un mot de passe temporaire">
+=======
             <input type="submit" class="btn btn-primary" value="Soumettre">
             <a class="btn btn-link ml-2" href="welcome.php">Annuler</a>
+>>>>>>> 08804dd1a874bd684b78872ca58e7ad0d8046985
         </div>
     </form>
 </div>
