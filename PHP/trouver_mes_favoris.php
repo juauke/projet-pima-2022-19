@@ -27,29 +27,43 @@ function find_influencers_of_user(string $database_name, int $id_user){
     $res1 = $conn->query($sql1);
     $res1->execute();
     foreach($res1->fetchAll(PDO::FETCH_ASSOC) as $cours){
-	    $res_final[]=$cours;
+        $res_final[]=$cours;
     }
     $sql2 = "SELECT * FROM spotify WHERE id IN ($array_spotify)";
     $res2 = $conn->query($sql2);
     $res2->execute();
     foreach($res2->fetchAll(PDO::FETCH_ASSOC) as $cours){
-	    $res_final[]=$cours;
+        $res_final[]=$cours;
     }
     $sql3 = "SELECT * FROM twitch WHERE id IN ($array_twitch)";
     $res3 = $conn->query($sql3);
     $res3->execute();
     foreach($res3->fetchAll(PDO::FETCH_ASSOC) as $cours){
-	    $res_final[]=$cours;
+        $res_final[]=$cours;
     }
     $sql4 = "SELECT * FROM youtube WHERE id IN ($array_youtube)";
     $res4 = $conn->query($sql4);
     $res4->execute();
     foreach($res4->fetchAll(PDO::FETCH_ASSOC) as $cours){
-	    $res_final[]=$cours;
+        $res_final[]=$cours;
     }
 
     $conn = NULL;
     return $res_final;
 }
+
+session_start();
+
+
+if (isset($_SESSION['id']))
+{
+
+
+$res = find_influencers_of_user("utilisateurs", $_SESSION["id"]);
+$_SESSION['Fav'] = json_encode($res);
+
+}
+
+
 
 ?>

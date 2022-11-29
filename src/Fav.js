@@ -1,5 +1,8 @@
 import React from "react";
-import {YoutuberInfo}  from "./SocialNetworkMenu.js";
+import Jquery from "jquery"
+import { influenceurs } from "./SearchBar.js";
+
+
 
 
 
@@ -27,18 +30,43 @@ class FavPage extends React.Component {
         super(props);
     }
 
+    getFav() {
+        influenceurs =[];
+        var session;
+        Jquery.ajaxSetup({cache: false})
+        Jquery.ajax({
+            url: "PHP/trouver_mes_favoris.php",
+        })
 
+
+        Jquery.ajax({
+          url: 'PHP/getsession.php',
+          success: function (data) {
+            session = data;
+          },
+          async: false
+        });
+        var sessionObj = JSON.parse(session);
+        console.log(sessionObj.Fav);
+        var data2=sessionObj.Fav.split(',');
+        var arr=JSON.parse(data2);
+        console.log(arr);
+        arr.forEach(e=>influenceurs.push([e.username,e.nb_views,e.nb_subscribers,e.nb_videos,e.image,e.url]));
+        return arr;
+        
+    }
 
     
     render(){
 
-        let listFavoris = [["Test1", "Test2", "Test3", "Test4", "Test5"],["Test11", "Test22", "Test33", "Test44", "Test55"]]
+        let listFavoris = this.getFav();
 
         return(<>
             {listFavoris.map(i=>
-            <FavorisInfos Name={i[0]} Follower={i[1]} NombreVideos={i[2]} NombreVues={i[3]} Link={i[4]} />
+            <FavorisInfos Name={i.username} Follower={i.nb_subscribers} NombreVideos={i.nb_videos} NombreVues={i.nb_views} Link={i.url} Image={i.image}/>
             )
             }
+            <button onClick={() => {alert(this.getFav())}}></button>
         </>)
     }
 }
