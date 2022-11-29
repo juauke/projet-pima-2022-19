@@ -115,6 +115,7 @@
     grid-column: 4;
     grid-row: 2;
     color: var(--greyBlue);
+    word-break: break-all;
   }
   
   .influenceursDisplayer {
@@ -128,8 +129,7 @@
     border: none;
     font-size: 28px;
     color: #FFFFFF;
-    padding: 20px;
-    width: 100px;
+    width: 50px;
     text-align: center;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
@@ -159,3 +159,8 @@
     transition: 0s
   }
   
+    @media screen and (max-width: 768px) {
+      .influenceursDisplayer {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
