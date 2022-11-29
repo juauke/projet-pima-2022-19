@@ -1,5 +1,5 @@
 import React from "react";
-
+import Jquery from "jquery"
 
 
 class SocialNetworkMenu extends React.Component {
@@ -97,6 +97,35 @@ class SocialNetworkMenu extends React.Component {
     constructor(props) {
       super(props)
     }
+
+    addFav(nom,nbfollower,nbvideos,nbvues,lien,img,reseau) {
+      var session;
+      //Jquery.ajaxSetup({cache: false})
+      Jquery.ajax({
+        url: './PHP/getsession.php',
+        success: function (data) {
+          session = data;
+        },
+        async: false
+      });
+      var sessionObj = JSON.parse(session);
+      //console.log(sessionObj.length);
+      if(sessionObj.length==0){
+        alert("Vous devez être connecté pour ajouter des favoris.")
+      }
+      else{
+      //console.log(nom);
+      Jquery.ajax({
+        url:"./PHP/ajout_suppr_utilisateurs.php",
+        method:"POST",
+        async:false,
+        data: {"action": "ADD", "dbName": "utilisateurs", "idUser": sessionObj.id,"nom":nom,"nbfollower":nbfollower,"nbvideos" :nbvideos, "nbvues":nbvues,"lien":lien,"img":img,'SocialN':reseau},
+        success: function (data) {
+          //console.log(data);
+        }
+    });
+    }}
+
   
     render() {
       return(<>
@@ -107,11 +136,13 @@ class SocialNetworkMenu extends React.Component {
       <p className='influenceurVids'>Nombre de vidéos publiées : {this.props.NombreVideos}</p>
       <p className='influenceurVues'>Nombre de vues : <br/>{this.props.NombreVues}</p>
       <a className='influenceurLink' href={this.props.Link}>{this.props.Link}</a>
-      <button className="boutonFavoris"><img src="favourite.png" width="50px"></img></button>
+      <button className="boutonFavoris" onClick={()=>this.addFav(this.props.Name,this.props.Follower,this.props.NombreVideos,this.props.NombreVues,this.props.Link,this.props.Image,this.props.Reseau)}><img src="favourite.png" width="50px"></img></button>
       </div>
       </>);
     }
   }
+  
+  
   
   
   class YoutubeNetworkContent extends React.Component {

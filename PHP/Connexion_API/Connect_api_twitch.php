@@ -161,7 +161,7 @@ else{
     //echo json_encode($lien_vers_autre_page);
 }
 }
-return array("name"=>$username,"pop"=>(int)json_encode($data2["total"]),"sub"=>$profile_data["data"][0]["view_count"],"vc"=>$nb_videos,"images"=>$profile_data["data"][0]["profile_image_url"],"url"=>"https://www.twitch.tv/$username");}}
+return array("name"=>$username,"pop"=>(int)json_encode($data2["total"]),"sub"=>$profile_data["data"][0]["view_count"],"vc"=>$nb_videos,"images"=>$profile_data["data"][0]["profile_image_url"],"url"=>"https://www.twitch.tv/$username","reseau"=>"twitch");}}
 
 $l=getStreamer($_GET["name"]);
 if($l!="NULL"){

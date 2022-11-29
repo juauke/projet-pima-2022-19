@@ -11,13 +11,14 @@ function Search_Bar_PHP(string $database_name, string $word){
     $res_final=[];
     $conn = connectToDatabase($database_name);
     //Preparing the request
-    $stmt = $conn->query("SELECT * FROM  youtube where youtube.channel LIKE '%$word'");
+    $stmt = $conn->query("SELECT * FROM  youtube where youtube.username LIKE '%$word'");
 
     //Executing the request
     $stmt->execute();
 
     //Saving the result
     foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $cours){
+        $cours["reseau"]="youtube";
 	    $res_final[]=$cours;
     }
 
@@ -26,6 +27,7 @@ function Search_Bar_PHP(string $database_name, string $word){
     //Executing the request
     $stmt->execute();
     foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $cours){
+        $cours["reseau"]="twitch";
 	    $res_final[]=$cours;
     }
 
@@ -36,6 +38,7 @@ function Search_Bar_PHP(string $database_name, string $word){
 
     //Saving the result
     foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $cours){
+        $cours["reseau"]="spotify";
 	    $res_final[]=$cours;
     }
     return $res_final;}
