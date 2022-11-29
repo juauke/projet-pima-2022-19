@@ -273,13 +273,13 @@ $nbvues=$_POST["nbvues"];
 $lien=$_POST["lien"];
 $img=$_POST["img"];
 //$idInfluencer=add_influenceur($nom,(int)$nbfollower,(int)$nbvideos,(int)$nbvues,$lien,$img,$dbName,$SocialN);
-if($action = "ADD") {
+if($action === "ADD") {
     $idInfluencer=add_influenceur($nom,(int)$nbfollower,(int)$nbvideos,(int)$nbvues,$lien,$img,$dbName,$SocialN);
     var_dump($idInfluencer);
     add_favorite($dbName, $idUser, $idInfluencer[0]["ID"], $SocialN);
 }
 
-else if($action = "REMOVE") {
+else if($action === "REMOVE") {
     delete_favorite($dbname, $idUser, $idInfluencer, $SocialN);
 }
 
