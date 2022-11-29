@@ -263,7 +263,7 @@ function add_influenceur(string $name,int $nbfollower,int $nbvideos,int $nbvues,
 var_dump($_POST);
 $action = $_POST["action"];
 $dbName =  $_POST["dbName"];
-$idUser = 1;
+$idUser = $_POST["idUser"];
 $SocialN = $_POST["SocialN"];
 $lien=$_POST["lien"];
 $nom=$_POST["nom"];
