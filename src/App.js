@@ -103,7 +103,7 @@ forceUpdate = () => {
     else if (this.props.Page == 'Favoris') {
       if (!sessionObj.loggedin){
         return(<>
-        <p>Pour accéder à vos favoris veuillez vous <a href="../PHP/Gestion_Compte/login.php">connecter</a> ou <a href="../PHP/Gestion_Compte/register.php">créer un compte.</a></p>
+        <p className='favPlacehold'>Pour accéder à vos favoris veuillez vous <a href="../PHP/Gestion_Compte/login.php">connecter</a> ou <a href="../PHP/Gestion_Compte/register.php">créer un compte.</a></p>
         </>)
 
       }
@@ -153,7 +153,8 @@ forceUpdate = () => {
       <MenuCross onClick={props.onClick}/>
        <h1 className='title'>{props.Page}</h1>
        <h4 id="username"> {sessionObj.username} </h4>
-      <LogButton Page="Log out" Link="../PHP/Gestion_Compte/logout.php"/>
+      <LogButton Page="Se déconnecter" Link="../PHP/Gestion_Compte/logout.php"/>
+      <LogButton Page="Changer mon mot de passe" Link="../PHP/Gestion_Compte/change-password.php"/>
        <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
        </div>
        </>
@@ -165,8 +166,8 @@ forceUpdate = () => {
     
     <MenuCross onClick={props.onClick}/>
      <h1 className='title'>{props.Page}</h1>
-    <LogButton Page="Log in" Link="../PHP/Gestion_Compte/login.php"/>
-    <LogButton Page="Sign in" Link="../PHP/Gestion_Compte/register.php"/>
+    <LogButton Page="Se connecter" Link="../PHP/Gestion_Compte/login.php"/>
+    <LogButton Page="S'inscrire" Link="../PHP/Gestion_Compte/register.php"/>
      <h1 className='shriimpeTitle'><em>Shriimpe </em></h1>
      </div> 
      </>
