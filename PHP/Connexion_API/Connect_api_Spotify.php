@@ -72,7 +72,7 @@ $i=Spotify($_GET["name"]);
 if($i!="NULL"){
 $i2=$i["artists"]["items"];
 foreach($i2 as $l){
-    echo json_encode(array("name"=>$l["name"],"pop"=>$l["popularity"],"sub"=>$l["followers"]["total"],"vc"=>"indéfini","images"=>$l["images"][0]["url"],"url"=>$l["external_urls"]["spotify"]),JSON_UNESCAPED_UNICODE);
+    echo json_encode(array("name"=>$l["name"],"pop"=>$l["popularity"],"sub"=>$l["followers"]["total"],"vc"=>"indéfini","images"=>$l["images"][0]["url"],"url"=>$l["external_urls"]["spotify"],"reseau"=>"spotify"),JSON_UNESCAPED_UNICODE);
 }
 }
 else{

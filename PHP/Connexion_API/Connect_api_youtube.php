@@ -44,7 +44,7 @@ function getChannel($name,$key){
         if($y==4){
             $cas_spec=(array)$c[0];
             $statistics=(array)($cas_spec['statistics']);
-            return (array("name"=>$name,"pop"=>$statistics['viewCount'],"sub"=>$statistics['subscriberCount'],"vc"=>$statistics['videoCount'],"images"=>$thumbnail_url,"url"=>"https://youtube.com/$url2"));
+            return (array("name"=>$name,"pop"=>$statistics['viewCount'],"sub"=>$statistics['subscriberCount'],"vc"=>$statistics['videoCount'],"images"=>$thumbnail_url,"url"=>"https://youtube.com/$url2","reseau"=>"youtube"));
     }
     }
     

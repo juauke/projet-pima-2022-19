@@ -75,7 +75,7 @@ forceUpdate = () => {
       return(
         <>
         <div>
-        {console.log(influenceurs)};
+        {console.log(influenceurs)}
         <SearchBar products={influenceurs} rerender={this.rerender} onChange={() => {alert(1)}} />
         <div id="results">
         {/*(()=> {
@@ -85,7 +85,7 @@ forceUpdate = () => {
         })()*/}
         {is_undefined && not_empty &&
         influenceurs.map(i=>
-          <YoutuberInfo Name={i[0]} Image={i[4]}  Follower={i[2]}  NombreVideos={i[3]}  NombreVues={i[1]} Link={i[5]} />)}
+          <YoutuberInfo Name={i[0]} Image={i[4]}  Follower={i[2]}  NombreVideos={i[3]}  NombreVues={i[1]} Link={i[5]} Reseau={i[6]} />)}
         </div>
       </div>
         </>
