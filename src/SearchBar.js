@@ -52,7 +52,7 @@ import Jquery from "jquery";
             var l=JSON.parse(data);
             console.log(data);
             if(data!="null"){
-            influenceurs.push([l.name,l.pop,l.sub,l.vc,l.images,l.url]);}
+            influenceurs.push([l.name,l.pop,l.sub,l.vc,l.images,l.url,l.reseau]);}
             //alert(influenceurs);
            },
            error : function(data,textStatus,errorThrown){
@@ -68,7 +68,7 @@ import Jquery from "jquery";
               var l=JSON.parse(data);
               console.log(data);
               if(data!=null){
-              influenceurs.push([l.name,l.pop,l.sub,l.vc,l.images,l.url]);}
+              influenceurs.push([l.name,l.pop,l.sub,l.vc,l.images,l.url,l.reseau]);}
                 //influenceurs.push([data[i].name,data[i].pop,data[i].sub,data[i].vc,data[i].images])
 
               //alert(influenceurs);
@@ -89,7 +89,7 @@ import Jquery from "jquery";
         if(data!="NULL" && data !="Curl error: NULL" && data!=""){
           var l=JSON.parse(data);
           //console.log(l["name"]);
-          influenceurs.push([l.channel,l.pop,l.sub,l.vc,l.images,l.url]);
+          influenceurs.push([l.channel,l.pop,l.sub,l.vc,l.images,l.url,l.reseau]);
         }
         //alert(influenceurs);
        },
@@ -106,7 +106,7 @@ import Jquery from "jquery";
           var data2=data.split(',');
           var arr=JSON.parse(data2);
           console.log(arr);
-          arr.forEach(e=>influenceurs.push([e.username,e.nb_views,e.nb_subscribers,e.nb_videos,e.image,e.url]));}
+          arr.forEach(e=>influenceurs.push([e.username,e.nb_views,e.nb_subscribers,e.nb_videos,e.image,e.url,e.reseau]));}
           props.rerender();
           
         }
@@ -147,8 +147,6 @@ import Jquery from "jquery";
             onClick={handleClearBtn}
             className="fas fa-times"
           ></i>
-        </div>
-        <div className="results-wrap">
         </div>
       </div>
     );
