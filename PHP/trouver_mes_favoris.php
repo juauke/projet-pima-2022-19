@@ -7,6 +7,7 @@ require("db.php");
 function find_influencers_of_user(string $database_name, int $id_user){
     //Connecting to the database
     $conn = connectToDatabase($database_name);
+    $res_final=[];
     $sql1 = "SELECT instagram, spotify, twitch, youtube FROM following_data WHERE id = $id_user";
     $res1 = $conn->query($sql1);
     $res1->execute(); 
@@ -24,20 +25,45 @@ function find_influencers_of_user(string $database_name, int $id_user){
 
     $sql1 = "SELECT * FROM instagram WHERE id IN ($array_instagram)";
     $res1 = $conn->query($sql1);
-    $res1 = $res1->fetchAll();
+    $res1->execute();
+    foreach($res1->fetchAll(PDO::FETCH_ASSOC) as $cours){
+        $res_final[]=$cours;
+    }
     $sql2 = "SELECT * FROM spotify WHERE id IN ($array_spotify)";
     $res2 = $conn->query($sql2);
-    $res2 = $res2->fetchAll();
+    $res2->execute();
+    foreach($res2->fetchAll(PDO::FETCH_ASSOC) as $cours){
+        $res_final[]=$cours;
+    }
     $sql3 = "SELECT * FROM twitch WHERE id IN ($array_twitch)";
     $res3 = $conn->query($sql3);
-    $res3 = $res3->fetchAll();
+    $res3->execute();
+    foreach($res3->fetchAll(PDO::FETCH_ASSOC) as $cours){
+        $res_final[]=$cours;
+    }
     $sql4 = "SELECT * FROM youtube WHERE id IN ($array_youtube)";
     $res4 = $conn->query($sql4);
-    $res4 = $res4->fetchAll();
+    $res4->execute();
+    foreach($res4->fetchAll(PDO::FETCH_ASSOC) as $cours){
+        $res_final[]=$cours;
+    }
 
-    $final_res = array_merge($res1, $res2, $res3, $res4);
     $conn = NULL;
-    return $final_res;
+    return $res_final;
 }
+
+session_start();
+
+
+if (isset($_SESSION['id']))
+{
+
+
+$res = find_influencers_of_user("utilisateurs", $_SESSION["id"]);
+$_SESSION['Fav'] = json_encode($res);
+
+}
+
+
 
 ?>

@@ -14,8 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate email
     if (empty(trim($_POST["email"]))) {
         $email_err = "Merci de rentrer une adresse mail.";
-    } elseif (!filter_var(trim($_POST["email"], FILTER_VALIDATE_EMAIL))) {
-        $email_err = "Une adresse mail de la forme \"utilisateur@domaine.suffixe\" est attendue.";
+    } elseif (!filter_var(trim($_POST["email"]), FILTER_VALIDATE_EMAIL)) {
+        $email_err = "Format attendu : \"utilisateur@domaine.suffixe\".";
     } else {
         // Prepare a select statement
         $sql = "SELECT id FROM `primary_data` WHERE email = :email";
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Set parameters
             $param_username = htmlentities($username);
             $param_email = htmlentities($email);
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_password = password_hash(htmlentities($password), PASSWORD_DEFAULT); // Creates a password hash
 
             // Attempt to execute the prepared statement
             if ($stmt->execute()) {
@@ -138,17 +138,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>S'inscrire</title>
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="jquery.min.js"></script>
-<script type="text/javascript" src="particles.js"></script>
+    <script type="text/javascript" src="particles.js"></script>
+
     <style>
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
     </style>
 </head>
 <body>
-
-<div id="particles-js"></div>
-  
-
+<div id="particles-js">
   <script type="text/javascript">
     //Fonction pour l'arrière plan
       $(document).ready(function () {
@@ -267,7 +265,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 )
   </script>
-<div class="center">
+</div>
+
+<a href="welcome.php" class="btn btn-secondary">Retour à l'accueil</a>
+
 <div class="wrapper">
     <h2>S'inscrire</h2>
     <p>Merci de remplir ce formulaire pour créer un compte.</p>
