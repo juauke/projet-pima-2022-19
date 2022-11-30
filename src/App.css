@@ -1,11 +1,10 @@
-
 :root {
   --black: #0B0C10;
   --darkGrey: #1F2833;
   --lightGrey: #C5C6C7;
   --lightBlue: #66FCF1;
   --greyBlue: #45A29E;
-  
+
 }
 
 .container {
@@ -34,14 +33,14 @@
 
 .currentPage {
   position: relative;
-  top: 13.5%;
+  top: 8em;
 }
 
 .topBar {
   display: flex;
   position: fixed;
   background-color: var(--black);
-  height: 10%;
+  height: 4.5em;
   width: 100%;
   top: 0%;
   left: 0%;
@@ -59,16 +58,14 @@
   color: var(--lightBlue);
   text-align: justify;
   font-family: 'DejaVU Sans Mono';
-  font-size: 37px;
   font-weight: 200;
   padding: 0%;
   width: 80%;
-  
+
 }
 
-.shriimpeTitle{
+.shriimpeTitle {
   color: var(--lightBlue);
-  margin-right: 20px;
 }
 
 .crossContainer {
@@ -84,12 +81,11 @@
   justify-content: center;
   display: flex;
   width: 7%;
-  height: 70%;
+  height: 90%;
   position: relative;
   margin-right: 1%;
   background-color: var(--black);
   color: var(--lightBlue);
-  font-size: 12px;
   border: 2px solid var(--black);
   transition-duration: 0.4s;
 }
@@ -114,7 +110,7 @@ svg {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-miterlimit: 1.5;
-cursor:pointer;
+  cursor: pointer;
 }
 
 svg path {
@@ -140,4 +136,58 @@ svg.active #bottom {
   left: 200px;
   margin-left: 20%;
   margin-top: 10%;
+}
+
+@media screen and (min-width: 768px) {
+  .title {
+    font-size: 37px;
+    line-height: 1em;
+  }
+
+  .shriimpeTitle {
+    color: var(--lightBlue);
+    margin-right: 20px;
+    font-size: 2em;
+    line-height: 1em;
+  }
+
+  .logButton {
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px) {
+  .title {
+    font-size: 20px;
+    line-height: 2.25em;
+  }
+
+  .shriimpeTitle {
+    color: var(--lightBlue);
+    margin-right: 15px;
+    font-size: 1.5em;
+    line-height: 1.5em;
+  }
+
+  .logButton {
+    font-size: 8px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .title {
+    font-size: 20px;
+    line-height: 2.25em;
+  }
+
+  .shriimpeTitle {
+    color: var(--lightBlue);
+    margin-right: 10px;
+    font-size: 1em;
+    line-height: 3em;
+  }
+
+  .logButton {
+    font-size: 6px;
+  }
 }
