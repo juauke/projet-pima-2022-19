@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   //SMTP::DEBUG_OFF = off (for production use)
                   //SMTP::DEBUG_CLIENT = client messages
                   //SMTP::DEBUG_SERVER = client and server messages
-                  $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                  $mail->SMTPDebug = SMTP::DEBUG_OFF;
               
                   //Tell PHPMailer to use SMTP                    
                   $mail->isSMTP();                                            
