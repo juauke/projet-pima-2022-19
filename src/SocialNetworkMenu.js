@@ -186,7 +186,7 @@ class SocialNetworkMenu extends React.Component {
     render() {
       return(
       <>
-        <h1 className='networkTitle'>Youtube</h1>
+        <h1 className='networkTitle'>Twitch</h1>
         <div className='influenceursDisplayer'>
         <YoutuberInfo Name="Xqc" Image="Xqc_pic.jpeg" Follower="11,4 M" NombreVideos="150" NombreVues="1 025 230 900 vues" Link="https://www.youtube.com/user/joueurdugrenier" />
         <YoutuberInfo Name="Zerator" Image="Zerator_pic.png" Follower="1,5 M" NombreVideos="" NombreVues="" Link="https://www.twitch.tv/zerator" />
@@ -206,7 +206,7 @@ class SocialNetworkMenu extends React.Component {
     render() {
       return(
       <>
-        <h1 className='networkTitle'>Youtube</h1>
+        <h1 className='networkTitle'>Spotify</h1>
         <div className='influenceursDisplayer'>
         <YoutuberInfo Name="Drake" Image="https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9" Follower="55976173" NombreVideos="84" NombreVues="71102707" Link="https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4" />
         <YoutuberInfo Name="Dua Lipa" Image="https://i.scdn.co/image/ab6761610000e5ebd42a27db3286b58553da8858" Follower="37346450" NombreVideos="58" NombreVues="58662647" Link="https://open.spotify.com/artist/6M2wZ9GZgrQXHCFfjv46we" />
