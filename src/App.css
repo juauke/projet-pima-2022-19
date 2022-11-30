@@ -138,6 +138,11 @@ svg.active #bottom {
   margin-top: 10%;
 }
 
+.statimgs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 @media screen and (min-width: 768px) {
   .title {
     font-size: 37px;
@@ -172,6 +177,10 @@ svg.active #bottom {
   .logButton {
     font-size: 8px;
   }
+
+  .statimgs {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 @media screen and (max-width: 576px) {
@@ -189,5 +198,9 @@ svg.active #bottom {
 
   .logButton {
     font-size: 6px;
+  }
+  
+  .statimgs {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
