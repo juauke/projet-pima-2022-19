@@ -13,12 +13,12 @@ require_once "../db.php";
 $pdo = connectToDatabase('utilisateurs');
 
 // Define variables and initialize with empty values
-$new_password = $confirm_password = "";
-$new_password_err = $confirm_password_err = "";
+$current_password = $new_password = $confirm_password = "";
+$current_password_err = $new_password_err = $confirm_password_err = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-
+    
     // Validate new password
     if(empty(trim($_POST["new_password"]))){
         $new_password_err = "Veuillez entrer le nouveau mot de passe.";
@@ -37,6 +37,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $confirm_password_err = "Les mots de passe ne correspondent pas.";
         }
     }
+
+  // Validate old password
+  if(empty(trim($_POST["current_password"]))){
+    $current_password_err = "Veuillez entrer le mot de passe actuel.";
+  } elseif(strlen(trim($_POST["current_password"])) < 6){
+    $current_password_err = "Le mot de passe actuel contient nécéssairement au moins 6 caractères.";
+  } else{
+    $current_password = trim($_POST["current_password"]);
+
+    // Prepare a select statement
+    $sql0 = "SELECT passwd FROM `primary_data` WHERE id = :id";
+
+    if($stmt = $pdo->prepare($sql0)){
+        // Bind variable to the prepared statement as parameter
+        $stmt->bindParam(":id", $param_id, PDO::PARAM_INT);
+
+        // Set parameters
+        $param_id = $_SESSION["id"];
+
+        // Attempt to execute the prepared statement
+        if($stmt->execute()){
+          if ($row = $stmt->fetch()) {
+            $hashed_password = $row["passwd"];
+
+            if(!password_verify($current_password, $hashed_password)){  
+              // Password is not valid, display a generic error message
+              $current_password_err = "Mot de passe invalide.";
+            }
+          }
+
+        } else{
+            echo "Oups ! Quelque chose s'est mal passée. Merci de réessayer ultérieurement...";
+        }
+    }
+    // Close statement
+    unset($stmt);
+  }
 
     // Check input errors before updating the database
     if(empty($new_password_err) && empty($confirm_password_err)){
@@ -59,7 +96,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 header("location: login.php");
                 exit();
             } else{
-                echo "Oups ! Quelque chose s'est mal passée. Merci de réessayer ultérieurement..";
+                echo "Oups ! Quelque chose s'est mal passée. Merci de réessayer ultérieurement...";
             }
 
             // Close statement
@@ -208,23 +245,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   </script>
 </div>
 
+<a href="welcome.php" class="btn btn-secondary">Retour à l'accueil</a>
+
 <div class="wrapper">
     <h2>Réinitialisation du mot de passe</h2>
     <p>Veuillez remplir ce formulaire pour réinitialiser votre mot de passe.</p>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <div class="form-group">
+            <label>Ancien mot de passe</label>
+            <input type="password" name="current_password" class="form-control <?php echo (!empty($current_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $current_password; ?>">
+            <span class="invalid-feedback"><?php echo $current_password_err; ?></span>
+        </div>
         <div class="form-group">
             <label>Nouveau mot de passe</label>
             <input type="password" name="new_password" class="form-control <?php echo (!empty($new_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $new_password; ?>">
             <span class="invalid-feedback"><?php echo $new_password_err; ?></span>
         </div>
         <div class="form-group">
-            <label>Confirmation mot de passe</label>
+            <label>Confirmation nouveau mot de passe</label>
             <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>">
             <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
         </div>
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Submit">
-            <a class="btn btn-link ml-2" href="welcome.php">Cancel</a>
+            <input type="submit" class="btn btn-primary" value="Envoyer">
+            <a class="btn btn-link ml-2" href="welcome.php">Annuler</a>
         </div>
     </form>
 </div>
