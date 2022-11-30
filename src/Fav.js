@@ -66,7 +66,6 @@ class FavPage extends React.Component {
             <FavorisInfos Name={i.username} Follower={i.nb_subscribers} NombreVideos={i.nb_videos} NombreVues={i.nb_views} Link={i.url} Image={i.image}/>
             )
             }
-            <button onClick={() => {alert(this.getFav())}}></button>
         </>)
     }
 }
